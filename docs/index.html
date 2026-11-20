@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BANKO Performance Monitor — Windows Hardware Monitor &amp; Overlay</title>
+  <meta name="description" content="Lightweight Windows hardware monitor, always-on-top gaming overlay, DWM FPS readout, and one-click system boost in a standalone 18.5 MB executable.">
+  <meta property="og:title" content="BANKO Performance Monitor — Windows Hardware Monitor &amp; Overlay">
+  <meta property="og:description" content="Real-time GPU, CPU, and RAM telemetry with a compact gaming overlay and one-click Boost System. Zero installer required.">
+  <meta property="og:image" content="https://hankobanko391.github.io/BANKO-Performance-Monitor/preview.png">
+  <meta property="og:url" content="https://hankobanko391.github.io/BANKO-Performance-Monitor/">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/png" href="emblem.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0D0F14;
+      --surface: #12161D;
+      --surface-elevated: #171C25;
+      --titlebar: #090B0F;
+      --green: #00FF66;
+      --cyan: #00E5FF;
+      --purple: #A855F7;
+      --text: #FFFFFF;
+      --text-soft: #C9D1D9;
+      --muted: #98A2B3;
+      --border: #232A36;
+      --font-display: "Chakra Petch", "Bahnschrift", "Segoe UI", sans-serif;
+      --font-sans: "Inter", "Segoe UI", system-ui, sans-serif;
+      --font-mono: "JetBrains Mono", "Consolas", monospace;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(circle at 86% 12%, rgba(0, 255, 102, 0.12) 0%, transparent 42%),
+        radial-gradient(circle at 12% 18%, rgba(0, 229, 255, 0.08) 0%, transparent 38%),
+        radial-gradient(circle at 82% 84%, rgba(0, 255, 102, 0.09) 0%, transparent 45%),
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Top Navigation */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(9, 11, 15, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .topbar-inner {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: 0.08em;
+      color: var(--text);
+    }
+
+    .brand img {
+      width: 34px;
+      height: 34px;
+      display: block;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color 140ms ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      color: var(--text);
+    }
+
+    .version-pill {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--green);
+      background: rgba(0, 255, 102, 0.08);
+      border: 1px solid rgba(0, 255, 102, 0.35);
+      border-radius: 999px;
+      padding: 4px 11px;
+      letter-spacing: 0.03em;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 64px 0 72px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 44px;
+      align-items: center;
+    }
+
+    .hero-copy {
+      text-align: center;
+      max-width: 740px;
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      background: rgba(0, 229, 255, 0.07);
+      border: 1px solid rgba(0, 229, 255, 0.28);
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 22px;
+    }
+
+    .eyebrow-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+    }
+
+    h1 {
+      margin: 0 0 18px;
+      font-family: var(--font-display);
+      font-size: clamp(2.35rem, 5vw, 3.65rem);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+
+    h1 .accent {
+      color: var(--green);
+      text-shadow: 0 0 28px rgba(0, 255, 102, 0.28);
+    }
+
+    .subhead {
+      margin: 0 auto 30px;
+      max-width: 620px;
+      font-size: 1.1rem;
+      color: var(--muted);
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 11px;
+      padding: 15px 28px;
+      border-radius: 12px;
+      font-family: var(--font-display);
+      font-size: 1.08rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      color: #FFFFFF;
+      background: linear-gradient(180deg, #0E5831 0%, #072A18 100%);
+      border: 2px solid var(--green);
+      box-shadow:
+        0 0 22px rgba(0, 255, 102, 0.34),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14);
+      transition: transform 150ms ease, box-shadow 150ms ease, background 150ms ease;
+    }
+
+    .btn-primary:hover,
+    .btn-primary:focus-visible {
+      transform: translateY(-2px);
+      background: linear-gradient(180deg, #13703F 0%, #0A3921 100%);
+      box-shadow:
+        0 0 34px rgba(0, 255, 102, 0.55),
+        inset 0 1px 0 rgba(255, 255, 255, 0.22);
+      outline: none;
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 15px 22px;
+      border-radius: 12px;
+      font-size: 0.96rem;
+      font-weight: 600;
+      color: var(--text-soft);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      transition: border-color 150ms ease, color 150ms ease, background 150ms ease;
+    }
+
+    .btn-secondary:hover,
+    .btn-secondary:focus-visible {
+      color: var(--text);
+      border-color: rgba(0, 229, 255, 0.45);
+      background: var(--surface-elevated);
+      outline: none;
+    }
+
+    .spec-strip {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px 22px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .spec-strip span {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .spec-strip span::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      opacity: 0.85;
+    }
+
+    /* Product Showcase */
+    .showcase-wrap {
+      position: relative;
+      max-width: 920px;
+      margin: 0 auto;
+    }
+
+    .showcase-glow {
+      position: absolute;
+      inset: -18px;
+      border-radius: 22px;
+      background: radial-gradient(circle at 75% 75%, rgba(0, 255, 102, 0.22), transparent 55%),
+                  radial-gradient(circle at 20% 20%, rgba(0, 229, 255, 0.16), transparent 55%);
+      filter: blur(22px);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .showcase-frame {
+      position: relative;
+      z-index: 1;
+      background: var(--surface);
+      border: 1px solid rgba(0, 255, 102, 0.35);
+      border-radius: 16px;
+      padding: 10px;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.65);
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 26px), calc(100% - 26px) 100%, 0 100%);
+    }
+
+    .showcase-frame img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    /* Sections */
+    section {
+      padding: 72px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .section-head {
+      max-width: 680px;
+      margin-bottom: 40px;
+    }
+
+    .section-kicker {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-family: var(--font-display);
+      font-size: clamp(1.7rem, 3.2vw, 2.35rem);
+      font-weight: 700;
+      line-height: 1.15;
+    }
+
+    .section-sub {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    /* 3 Telemetry Cards mirroring the app */
+    .cards-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+      margin-bottom: 24px;
+    }
+
+    .neon-card {
+      position: relative;
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 26px 24px 28px;
+      border: 1.5px solid var(--card-accent);
+      box-shadow: 0 0 24px var(--card-glow);
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 24px), calc(100% - 24px) 100%, 0 100%);
+    }
+
+    .neon-card::after {
+      content: "";
+      position: absolute;
+      right: 6px;
+      bottom: 6px;
+      width: 18px;
+      height: 18px;
+      border-right: 2px solid var(--card-accent);
+      border-bottom: 2px solid var(--card-accent);
+      opacity: 0.65;
+      transform: skewX(-45deg);
+      pointer-events: none;
+    }
+
+    .card-gpu {
+      --card-accent: var(--green);
+      --card-glow: rgba(0, 255, 102, 0.12);
+    }
+
+    .card-cpu {
+      --card-accent: var(--cyan);
+      --card-glow: rgba(0, 229, 255, 0.12);
+    }
+
+    .card-ram {
+      --card-accent: var(--purple);
+      --card-glow: rgba(168, 85, 247, 0.12);
+    }
+
+    .card-tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--card-accent);
+      margin-bottom: 12px;
+    }
+
+    .neon-card h3 {
+      margin: 0 0 10px;
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+    }
+
+    .neon-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    /* Controls Strip */
+    .controls-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .control-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 22px;
+    }
+
+    .control-box h4 {
+      margin: 0 0 8px;
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .control-pill {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .pill-cyan { background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+    .pill-green { background: var(--green); box-shadow: 0 0 8px var(--green); }
+    .pill-purple { background: var(--purple); box-shadow: 0 0 8px var(--purple); }
+
+    .control-box p {
+      margin: 0;
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    /* Quick Start & Technical Specs */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .steps {
+      display: grid;
+      gap: 16px;
+    }
+
+    .step {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      display: grid;
+      place-items: center;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--green);
+      background: rgba(0, 255, 102, 0.08);
+      border: 1px solid rgba(0, 255, 102, 0.35);
+    }
+
+    .step h3 {
+      margin: 0 0 4px;
+      font-family: var(--font-display);
+      font-size: 1.08rem;
+    }
+
+    .step p {
+      margin: 0;
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    .specs-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+    }
+
+    .specs-panel h3 {
+      margin: 0 0 18px;
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      letter-spacing: 0.03em;
+    }
+
+    .spec-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+
+    .spec-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 0.92rem;
+    }
+
+    .spec-list li:last-child {
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .spec-label {
+      color: var(--muted);
+    }
+
+    .spec-value {
+      font-family: var(--font-mono);
+      font-size: 0.86rem;
+      color: var(--text);
+      text-align: right;
+    }
+
+    /* FAQ */
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .faq-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px;
+    }
+
+    .faq-item h3 {
+      margin: 0 0 8px;
+      font-family: var(--font-display);
+      font-size: 1.08rem;
+      color: var(--text);
+    }
+
+    .faq-item p {
+      margin: 0;
+      font-size: 0.93rem;
+      color: var(--muted);
+    }
+
+    .neon-card code,
+    .section-sub code,
+    .faq-item code {
+      font-family: var(--font-mono);
+      font-size: 0.85em;
+      color: var(--cyan);
+      background: rgba(0, 229, 255, 0.08);
+      padding: 2px 6px;
+      border-radius: 5px;
+    }
+
+    /* Bottom CTA */
+    .bottom-cta {
+      text-align: center;
+      background: linear-gradient(180deg, rgba(18, 22, 29, 0.9) 0%, rgba(11, 28, 20, 0.65) 100%);
+      border: 1px solid rgba(0, 255, 102, 0.35);
+      border-radius: 18px;
+      padding: 46px 28px;
+      box-shadow: 0 0 40px rgba(0, 255, 102, 0.08);
+    }
+
+    .bottom-cta h2 {
+      margin-bottom: 10px;
+    }
+
+    .bottom-cta p {
+      margin: 0 auto 26px;
+      max-width: 540px;
+      color: var(--muted);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--titlebar);
+      padding: 26px 0;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-links a:hover,
+    .footer-links a:focus-visible {
+      color: var(--green);
+    }
+
+    @media (max-width: 900px) {
+      .cards-3,
+      .controls-strip,
+      .two-col,
+      .faq-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 44px 0 54px;
+      }
+
+      section {
+        padding: 52px 0;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .nav-links a.hide-sm {
+        display: none;
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .btn-primary,
+      .btn-secondary,
+      .nav-links a {
+        transition: none;
+      }
+
+      .btn-primary:hover {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="#">
+        <img src="emblem.png" alt="BANKO triple-snake emblem">
+        <span>BANKO</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a class="hide-sm" href="#features">Features</a>
+        <a class="hide-sm" href="#install">Install</a>
+        <a class="hide-sm" href="#faq">FAQ</a>
+        <a href="https://github.com/hankobanko391/BANKO-Performance-Monitor" target="_blank" rel="noopener">GitHub</a>
+        <a class="version-pill" href="https://github.com/hankobanko391/BANKO-Performance-Monitor/releases/tag/v1.0.0" target="_blank" rel="noopener">v1.0.0</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container hero">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">
+            <span class="eyebrow-dot" aria-hidden="true"></span>
+            <span>Windows 10 &amp; 11 · Standalone Executable · v1.0.0</span>
+          </div>
+          <h1>Real-Time Hardware Telemetry. <span class="accent">Zero Bloat.</span></h1>
+          <p class="subhead">
+            Monitor GPU temperature and load, CPU utilization, and RAM usage in one lightweight desktop dashboard with an always-on-top mini gaming overlay and one-click Boost System.
+          </p>
+          <div class="cta-row">
+            <a class="btn-primary" href="https://github.com/hankobanko391/BANKO-Performance-Monitor/releases/download/v1.0.0/BANKO.exe">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Download BANKO.exe (Windows)</span>
+            </a>
+            <a class="btn-secondary" href="https://github.com/hankobanko391/BANKO-Performance-Monitor" target="_blank" rel="noopener">
+              <span>View Source on GitHub</span>
+            </a>
+          </div>
+          <div class="spec-strip">
+            <span>18.5 MB Single File</span>
+            <span>No Installer Required</span>
+            <span>Silent Background Polling</span>
+            <span>Open Source Python</span>
+          </div>
+        </div>
+
+        <div class="showcase-wrap">
+          <div class="showcase-glow" aria-hidden="true"></div>
+          <div class="showcase-frame">
+            <img src="preview.png" alt="BANKO Performance Monitor desktop application showing live GPU, CPU, and RAM gauges">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section id="features">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-kicker">Telemetry &amp; Controls</div>
+          <h2>Built to stay out of your way while you game</h2>
+          <p class="section-sub">
+            Streaming telemetry runs on a single background thread with suppressed console windows (<code>CREATE_NO_WINDOW</code>) and cached gauge frames so BANKO stays lean.
+          </p>
+        </div>
+
+        <div class="cards-3">
+          <article class="neon-card card-gpu">
+            <span class="card-tag">GPU TELEMETRY</span>
+            <h3>NVIDIA Arc Gauge</h3>
+            <p>
+              Streams GPU name, core temperature (°C), and GPU load percentage from a persistent <code>nvidia-smi</code> pipe without spawning processes every second.
+            </p>
+          </article>
+
+          <article class="neon-card card-cpu">
+            <span class="card-tag">CPU TELEMETRY</span>
+            <h3>Load Ring &amp; Thermal Sensor</h3>
+            <p>
+              Tracks real-time CPU load via <code>psutil</code> inside a glowing cyan ring gauge alongside processor identification and sensor temperature.
+            </p>
+          </article>
+
+          <article class="neon-card card-ram">
+            <span class="card-tag">MEMORY TELEMETRY</span>
+            <h3>Purple-to-Green RAM Bar</h3>
+            <p>
+              Displays installed RAM capacity, exact used vs. total gigabytes, percentage consumed, and remaining free memory in real time.
+            </p>
+          </article>
+        </div>
+
+        <div class="controls-strip">
+          <div class="control-box">
+            <h4><span class="control-pill pill-cyan" aria-hidden="true"></span>MINI OVERLAY MODE</h4>
+            <p>Shrinks the dashboard into a compact, draggable, semi-transparent always-on-top corner bar showing GPU, CPU, and RAM at a glance.</p>
+          </div>
+          <div class="control-box">
+            <h4><span class="control-pill pill-green" aria-hidden="true"></span>BOOST SYSTEM</h4>
+            <p>Trims process working sets, clears stale user temp files, and switches Windows to the High Performance power plan in one click.</p>
+          </div>
+          <div class="control-box">
+            <h4><span class="control-pill pill-purple" aria-hidden="true"></span>FPS OVERLAY</h4>
+            <p>Toggles a click-through, always-on-top corner FPS readout powered by Windows DWM composition timing.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="install">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-kicker">Quick Start</div>
+          <h2>Up and running in ten seconds</h2>
+          <p class="section-sub">
+            No installer wizard, no background service, and no account sign-in. Download the standalone executable and launch.
+          </p>
+        </div>
+
+        <div class="two-col">
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">01</div>
+              <div>
+                <h3>Download BANKO.exe</h3>
+                <p>Grab the standalone Windows 64-bit binary from the v1.0.0 GitHub Release (~18.5 MB).</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">02</div>
+              <div>
+                <h3>Double-click to launch</h3>
+                <p>Everything—including the custom Pillow-rendered triple-snake emblem and fonts—is bundled directly inside the executable.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">03</div>
+              <div>
+                <h3>Optional: Run as Administrator</h3>
+                <p>Right-click and choose <strong>Run as administrator</strong> if you want Boost System to also purge the Windows standby memory list.</p>
+              </div>
+            </div>
+          </div>
+
+          <aside class="specs-panel" aria-label="Technical specifications">
+            <h3>Release Specifications</h3>
+            <ul class="spec-list">
+              <li>
+                <span class="spec-label">Version</span>
+                <span class="spec-value">v1.0.0</span>
+              </li>
+              <li>
+                <span class="spec-label">Platform</span>
+                <span class="spec-value">Windows 10 / 11 (x64)</span>
+              </li>
+              <li>
+                <span class="spec-label">Executable Size</span>
+                <span class="spec-value">18.5 MB (--onefile)</span>
+              </li>
+              <li>
+                <span class="spec-label">GPU Telemetry</span>
+                <span class="spec-value">NVIDIA (nvidia-smi)</span>
+              </li>
+              <li>
+                <span class="spec-label">CPU &amp; RAM</span>
+                <span class="spec-value">psutil + WMI/CIM</span>
+              </li>
+              <li>
+                <span class="spec-label">Refresh Interval</span>
+                <span class="spec-value">1000 ms background</span>
+              </li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-kicker">FAQ</div>
+          <h2>Common questions</h2>
+        </div>
+
+        <div class="faq-grid">
+          <div class="faq-item">
+            <h3>Why does Windows SmartScreen show a warning?</h3>
+            <p>
+              Open-source standalone binaries without a paid Authenticode certificate trigger SmartScreen on first run. Click <strong>More info</strong> then <strong>Run anyway</strong>, or inspect and build the Python source yourself.
+            </p>
+          </div>
+          <div class="faq-item">
+            <h3>Do I need Python installed to run BANKO.exe?</h3>
+            <p>
+              No. <code>BANKO.exe</code> bundles Python 3.12, <code>customtkinter</code>, <code>psutil</code>, and <code>pillow</code> into a single standalone executable.
+            </p>
+          </div>
+          <div class="faq-item">
+            <h3>What does Boost System actually do?</h3>
+            <p>
+              It trims process working sets, removes expired files from <code>%TEMP%</code>, and activates the Windows High Performance power scheme. Elevated runs also purge the standby list.
+            </p>
+          </div>
+          <div class="faq-item">
+            <h3>Can I build it from source?</h3>
+            <p>
+              Yes—clone the repository, run <code>pip install -r requirements.txt</code>, and run <code>python main.py</code> or bundle with PyInstaller.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="bottom-cta">
+          <h2>Ready to monitor with zero clutter?</h2>
+          <p>Download the standalone Windows executable or inspect every line of code on GitHub.</p>
+          <div class="cta-row" style="margin-bottom: 0;">
+            <a class="btn-primary" href="https://github.com/hankobanko391/BANKO-Performance-Monitor/releases/download/v1.0.0/BANKO.exe">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Download BANKO.exe (Windows)</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>BANKO Performance Monitor · Open Source Windows Utility</span>
+      <div class="footer-links">
+        <a href="https://github.com/hankobanko391/BANKO-Performance-Monitor" target="_blank" rel="noopener">GitHub Repository</a>
+        <a href="https://github.com/hankobanko391/BANKO-Performance-Monitor/releases/tag/v1.0.0" target="_blank" rel="noopener">Release v1.0.0</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

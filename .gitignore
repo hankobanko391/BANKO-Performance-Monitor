@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+*$py.class
+build/
+dist/
+*.spec
+banko_icon.ico
+.venv/
+venv/
