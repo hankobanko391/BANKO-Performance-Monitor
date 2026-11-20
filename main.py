@@ -402,7 +402,7 @@ class App:
                                 fill="#C9D1D9", width=max(1, px(1.4)))
 
         # header ----------------------------------------------------------------
-        self.cv.create_text(px(390), px(104), text="BANKO", font=self.f_brand, fill=WHITE)
+        self.cv.create_text(px(390), px(92), text="BANKO", font=self.f_brand, fill=WHITE)
         self.hero = self.photo(make_emblem(px(118)))
         self.cv.create_image(px(574), px(102), image=self.hero)
 
@@ -416,8 +416,11 @@ class App:
         cxs = [x0 + CW / 2 for x0 in COLS]
         y0 = CARD_Y0
 
+        # System brand/model subtitle
+        self.sys_name = cv.create_text(px(390), px(135), text="Detecting system...", font=self.f_foot, fill="#00E5FF")
+
         # GPU
-        self.gpu_name = cv.create_text(px(cxs[0]), px(y0 + 72), text="NVIDIA GeForce RTX 2050",
+        self.gpu_name = cv.create_text(px(cxs[0]), px(y0 + 72), text="Detecting GPU...",
                                        font=self.f_sub, fill=GRAY)
         def tl(cx, cy, w, h):  # top-left of a (w, h) design-px image centred on (cx, cy)
             return px(cx) - int(w * S) // 2, px(cy) - int(h * S) // 2
@@ -435,6 +438,7 @@ class App:
         cv.create_text(px(cxs[1]), px(y0 + 158), text="LOAD:", font=self.f_lbl, fill=GRAY)
         self.cpu_load = cv.create_text(px(cxs[1]), px(y0 + 190), text="--%", font=self.f_mid, fill=WHITE)
         self.cpu_temp = Pair(cv, px(cxs[1]), px(y0 + 224), self.f_small, GRAY, WHITE, gap=px(5))
+        self.cpu_meta = cv.create_text(px(cxs[1]), px(y0 + 295), text="--C / --T · -- GHz", font=self.f_foot, fill=GRAY)
 
         # RAM
         self.ram_total = cv.create_text(px(cxs[2]), px(y0 + 72), text="-- GB Total", font=self.f_sub, fill=GRAY)
@@ -1008,14 +1012,17 @@ class App:
             return  # main window hidden; skip the expensive repaint
 
         put = self._put
+        put(self.sys_name, text=s.system_name)
         put(self.gpu_name, text=s.gpu_name)
         put(self.cpu_name, text=s.cpu_name)
         put(self.gpu_temp, text=f"{gt}°C")
         self.gpu_load.set("LOAD:", f"{gl}%")
-        put(self.gpu_img, image=self._gpu_gauge((s.gpu_temp or 0) / 100.0))
+        gpu_gauge_val = s.gpu_temp if s.gpu_temp is not None else (s.gpu_load or 0)
+        put(self.gpu_img, image=self._gpu_gauge(gpu_gauge_val / 100.0))
 
         put(self.cpu_load, text=f"{cl}%")
         self.cpu_temp.set("TEMP:", ct)
+        put(self.cpu_meta, text=f"{s.cpu_cores}C / {s.cpu_threads}T · {s.cpu_freq_ghz:.2f} GHz" if s.cpu_freq_ghz else f"{s.cpu_cores}C / {s.cpu_threads}T")
         put(self.cpu_img, image=self._cpu_ring(s.cpu_load / 100.0))
 
         put(self.ram_total, text=f"{round(total):d}GB Total")

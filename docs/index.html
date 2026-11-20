@@ -763,7 +763,7 @@
           </div>
           <h1>BANKO Performance Monitor <span class="accent">hankobanko391</span></h1>
           <p class="subhead">
-            <strong>Hong Kong Bank Performance List BANKO</strong> — Real-time GPU temperature and load, CPU utilization, and RAM usage in one lightweight Windows desktop dashboard with an always-on-top mini gaming overlay and one-click Boost System.
+            <strong>Hong Kong Bank Performance List BANKO</strong> — Universal Windows 10/11 hardware monitor &amp; tuner for HP, Dell, Lenovo, ASUS, Acer, MSI, and custom PCs. Track NVIDIA, AMD Radeon, and Intel Arc/Iris GPUs, CPU cores &amp; clocks, and RAM with a gaming overlay and one-click Boost System.
           </p>
           <div class="cta-row">
             <a class="btn-primary" href="https://github.com/hankobanko391/BANKO-Performance-Monitor/releases/download/v1.0.0/BANKO.exe">
@@ -807,18 +807,18 @@
 
         <div class="cards-3">
           <article class="neon-card card-gpu">
-            <span class="card-tag">GPU TELEMETRY</span>
-            <h3>NVIDIA Arc Gauge</h3>
+            <span class="card-tag">UNIVERSAL GPU TELEMETRY</span>
+            <h3>NVIDIA, AMD &amp; Intel Arc Gauge</h3>
             <p>
-              Streams GPU name, core temperature (°C), and GPU load percentage from a persistent <code>nvidia-smi</code> pipe without spawning processes every second.
+              Streams NVIDIA metrics from a persistent <code>nvidia-smi</code> pipe and falls back cleanly to <code>Win32_VideoController</code> and Windows GPU performance counters for AMD Radeon and Intel Iris/Arc GPUs.
             </p>
           </article>
 
           <article class="neon-card card-cpu">
-            <span class="card-tag">CPU TELEMETRY</span>
-            <h3>Load Ring &amp; Thermal Sensor</h3>
+            <span class="card-tag">CPU &amp; BRAND DETECTION</span>
+            <h3>Load Ring, Cores &amp; Clocks</h3>
             <p>
-              Tracks real-time CPU load via <code>psutil</code> inside a glowing cyan ring gauge alongside processor identification and sensor temperature.
+              Auto-detects your PC manufacturer and model across HP, Dell, Lenovo, ASUS, Acer, MSI, and custom builds while tracking CPU load, core/thread count, GHz clock speed, and temperature.
             </p>
           </article>
 
@@ -838,7 +838,7 @@
           </div>
           <div class="control-box">
             <h4><span class="control-pill pill-green" aria-hidden="true"></span>BOOST SYSTEM</h4>
-            <p>Trims process working sets, clears stale user temp files, and switches Windows to the High Performance power plan in one click.</p>
+            <p>Activates Ultimate / High Performance power plan, trims working sets and idle bloat, applies DirectX High-Performance GPU preferences, and tunes DNS/TCP latency.</p>
           </div>
           <div class="control-box">
             <h4><span class="control-pill pill-purple" aria-hidden="true"></span>FPS OVERLAY</h4>
@@ -900,7 +900,7 @@
               </li>
               <li>
                 <span class="spec-label">GPU Telemetry</span>
-                <span class="spec-value">NVIDIA (nvidia-smi)</span>
+                <span class="spec-value">NVIDIA / AMD / Intel</span>
               </li>
               <li>
                 <span class="spec-label">CPU &amp; RAM</span>
@@ -939,7 +939,7 @@
           <div class="faq-item">
             <h3>What does Boost System actually do?</h3>
             <p>
-              It trims process working sets, removes expired files from <code>%TEMP%</code>, and activates the Windows High Performance power scheme. Elevated runs also purge the standby list.
+              It switches Windows to Ultimate / High Performance power plan, trims process working sets and idle background bloat, configures DirectX High-Performance GPU preferences (<code>DirectXUserGlobalSettings</code>), and optimizes DNS/TCP settings. Elevated runs also flush the DNS cache and standby list.
             </p>
           </div>
           <div class="faq-item">
