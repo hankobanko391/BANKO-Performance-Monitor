@@ -4,7 +4,8 @@ Lightweight, universal Windows 10/11 desktop hardware monitor, gaming overlay, a
 
 ## Official Release & Publisher Information
 
-- **Official Publisher**: [`hankobanko391`](https://github.com/hankobanko391)
+- **Official Publisher**: **Yassin Haitham** ([`hankobanko391`](https://github.com/hankobanko391))
+- **Portfolio Hub**: https://hankobanko391.github.io/
 - **Version**: `v2.0.0`
 - **Official Website (GitHub Pages)**: https://hankobanko391.github.io/BANKO-Performance-Monitor/
 - **Official Releases**: https://github.com/hankobanko391/BANKO-Performance-Monitor/releases
@@ -48,3 +49,14 @@ python main.py
 ```powershell
 pyinstaller --onefile --windowed --collect-all customtkinter --name BANKO main.py
 ```
+
+---
+
+## Author & Related Projects by Yassin Haitham (`hankobanko391`)
+
+- **Author:** **Yassin Haitham** ([@hankobanko391](https://github.com/hankobanko391))
+- **Portfolio Hub:** https://hankobanko391.github.io/
+- **Public Windows Hardware Utilities Ecosystem:**
+  - [**HANKO Thermal Suite**](https://github.com/hankobanko391/HANKO-Thermal-Suite) ([Live Site](https://hankobanko391.github.io/HANKO-Thermal-Suite/)) — Industrial Windows hardware telemetry, `powercfg` processor policy engine, and multi-core thermal load verification utility.
+  - [**BANKO Performance Monitor**](https://github.com/hankobanko391/BANKO-Performance-Monitor) ([Live Site](https://hankobanko391.github.io/BANKO-Performance-Monitor/)) — Universal Windows 10/11 GPU, CPU, and RAM performance monitor, mini gaming overlay, DWM FPS counter, and one-click Boost System.
+  - [**BANKO Safe OC Tuners (BANKO Tuner)**](https://github.com/hankobanko391/BANKO-Safe-OC-Tuners) ([Live Site](https://hankobanko391.github.io/BANKO-Safe-OC-Tuners/)) — Brand-locked HP and Dell laptop GPU & performance tuners with an 82°C automatic thermal cutoff and zero-voltage safety lock.
