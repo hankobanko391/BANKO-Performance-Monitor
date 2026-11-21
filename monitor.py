@@ -1,14 +1,14 @@
-"""BANKO v2.2.0 telemetry + hardware breakdown + hybrid fan & power sampling.
+"""BANKO v3.0.0 telemetry + hardware breakdown + hybrid fan, storage & power sampling.
 
 Designed for ultra-low background overhead on any Windows 10/11 PC or laptop:
   * one background thread, one sample per second
   * NVIDIA GPUs stream via a single persistent `nvidia-smi -lms 1000` pipe
-    (temp, load, MHz clock, VRAM used/total MB, P-State, power draw)
+    (temp, load, core MHz, memory MHz, VRAM used/total MB, P-State, power draw)
   * AMD / Intel / non-NVIDIA GPUs fall back cleanly to WMI / registry
     identification and Windows GPU Engine performance counters
   * CPU load, peak core, dynamic Turbo GHz, detailed kernel/OS RAM breakdown,
     and Windows AC/battery telemetry via native kernel32/psapi/powrprof + psutil
-  * Hybrid multi-fan speed engine via PawnIO LibreHardwareMonitorLib.dll
+  * Disk throughput MB/s + LibreHardwareMonitorLib.dll NVMe/fan telemetry
   * console windows are always suppressed (CREATE_NO_WINDOW)
 """
 from __future__ import annotations
@@ -515,6 +515,8 @@ class Snapshot:
     gpu_load: float | None = None
     gpu_clock_mhz: float | None = None
     gpu_max_clock_mhz: float | None = None
+    gpu_mem_clock_mhz: float | None = None
+    gpu_max_mem_clock_mhz: float | None = None
     gpu_vram_used_mb: float | None = None
     gpu_vram_total_mb: float | None = None
     gpu_vram_pct: float | None = None
@@ -539,9 +541,13 @@ class Snapshot:
     battery_percent: float | None = None
     power_status: str = "AC MAINS"
     power_rate_w: float | None = None
+    est_system_power_w: float | None = None
     battery_time_left_min: int | None = None
     power_plan_name: str = "BALANCED"
     power_plan_guid: str = ""
+    disk_read_mb_s: float = 0.0
+    disk_write_mb_s: float = 0.0
+    storage_sensors: list[dict[str, object]] = field(default_factory=list)
     fan_state: FanArrayState = field(
         default_factory=lambda: FanArrayState(
             mode="HYBRID_ESTIMATED",
@@ -634,6 +640,8 @@ class Monitor:
             "load": None,
             "clock_mhz": None,
             "max_clock_mhz": None,
+            "mem_clock_mhz": None,
+            "max_mem_clock_mhz": None,
             "vram_used_mb": None,
             "vram_total_mb": None,
             "pstate": None,
@@ -647,6 +655,14 @@ class Monitor:
         self._ps: subprocess.Popen | None = None
         self._fps = DwmFps()
         self._fan_engine = FanEngine()
+
+        try:
+            self._prev_disk_io = psutil.disk_io_counters(perdisk=False)
+        except Exception:
+            self._prev_disk_io = None
+        self._prev_disk_t = time.monotonic()
+        self._storage_sensors: list[dict[str, object]] = []
+        self._last_storage_poll = 0.0
 
         self.system_name = get_system_name()
         self.cpu_name = get_cpu_name()
@@ -717,7 +733,8 @@ class Monitor:
                 [
                     "nvidia-smi",
                     "--query-gpu=name,temperature.gpu,utilization.gpu,clocks.current.graphics,"
-                    "clocks.max.graphics,memory.used,memory.total,pstate,power.draw",
+                    "clocks.max.graphics,clocks.current.memory,clocks.max.memory,"
+                    "memory.used,memory.total,pstate,power.draw",
                     "--format=csv,noheader,nounits",
                     "-lms",
                     str(int(self.interval * 1000)),
@@ -733,16 +750,18 @@ class Monitor:
         try:
             for line in self._smi.stdout:
                 parts = [p.strip() for p in line.split(",")]
-                if len(parts) < 9:
+                if len(parts) < 11:
                     continue
                 temp = self._parse_opt_float(parts[1])
                 load = self._parse_opt_float(parts[2])
                 clk = self._parse_opt_float(parts[3])
                 max_clk = self._parse_opt_float(parts[4])
-                v_used = self._parse_opt_float(parts[5])
-                v_total = self._parse_opt_float(parts[6])
-                pstate = parts[7] if parts[7].lower() not in _NA_TOKENS else None
-                power_w = self._parse_opt_float(parts[8])
+                mem_clk = self._parse_opt_float(parts[5])
+                max_mem_clk = self._parse_opt_float(parts[6])
+                v_used = self._parse_opt_float(parts[7])
+                v_total = self._parse_opt_float(parts[8])
+                pstate = parts[9] if parts[9].lower() not in _NA_TOKENS else None
+                power_w = self._parse_opt_float(parts[10])
 
                 with self._lock:
                     self._gpu["name"] = parts[0] or self._gpu["name"]
@@ -754,6 +773,10 @@ class Monitor:
                         self._gpu["clock_mhz"] = clk
                     if max_clk is not None:
                         self._gpu["max_clock_mhz"] = max_clk
+                    if mem_clk is not None:
+                        self._gpu["mem_clock_mhz"] = mem_clk
+                    if max_mem_clk is not None:
+                        self._gpu["max_mem_clock_mhz"] = max_mem_clk
                     if v_used is not None:
                         self._gpu["vram_used_mb"] = v_used
                     if v_total is not None:
@@ -856,6 +879,8 @@ class Monitor:
                 gpu_name = str(self._gpu["name"] or self.fallback_gpu_name)
                 gpu_clock = self._gpu["clock_mhz"]
                 gpu_max_clock = self._gpu["max_clock_mhz"]
+                gpu_mem_clock = self._gpu["mem_clock_mhz"]
+                gpu_max_mem_clock = self._gpu["max_mem_clock_mhz"]
                 vram_used = self._gpu["vram_used_mb"]
                 vram_total = self._gpu["vram_total_mb"] if self._gpu["vram_total_mb"] is not None else self.fallback_vram_mb
                 pstate = self._gpu["pstate"]
@@ -876,15 +901,45 @@ class Monitor:
             if vram_used is not None and vram_total is not None and float(vram_total) > 0:
                 vram_pct = round(max(0.0, min(100.0, (float(vram_used) / float(vram_total)) * 100.0)), 1)
 
-            # Hybrid Fan Scan & LHM Battery power
+            # Disk throughput MB/s
+            disk_read_mb_s = 0.0
+            disk_write_mb_s = 0.0
+            try:
+                cur_io = psutil.disk_io_counters(perdisk=False)
+                dt_io = now_mono - self._prev_disk_t
+                if cur_io is not None and self._prev_disk_io is not None and dt_io > 0.05:
+                    disk_read_mb_s = round(max(0.0, (cur_io.read_bytes - self._prev_disk_io.read_bytes) / (1048576.0 * dt_io)), 2)
+                    disk_write_mb_s = round(max(0.0, (cur_io.write_bytes - self._prev_disk_io.write_bytes) / (1048576.0 * dt_io)), 2)
+                self._prev_disk_io = cur_io
+                self._prev_disk_t = now_mono
+            except Exception:
+                pass
+
+            # Hybrid Fan Scan, LHM Storage Sensors & LHM Battery power
             fan_state = self._fan_engine.scan_fans(
                 cpu_temp_c=cpu_temp,
                 gpu_temp_c=gpu_temp if isinstance(gpu_temp, (int, float)) else None,
                 cpu_load_pct=cpu_load,
                 gpu_load_pct=float(gpu_load) if isinstance(gpu_load, (int, float)) else 0.0,
             )
+            if self._last_storage_poll == 0.0 or (now_mono - self._last_storage_poll >= 5.0):
+                try:
+                    self._storage_sensors = self._fan_engine.read_storage_sensors()
+                except Exception:
+                    self._storage_sensors = []
+                self._last_storage_poll = now_mono
+
             lhm_bat_w = self._fan_engine.read_battery_power_w()
             bat_present, bat_pct, pwr_status, pwr_rate_w, bat_mins = _read_battery_power(lhm_bat_w)
+
+            gpu_load_val = float(gpu_load) if isinstance(gpu_load, (int, float)) else 0.0
+            gpu_pwr_val = float(gpu_power) if isinstance(gpu_power, (int, float)) else None
+            if pwr_rate_w is not None:
+                est_sys_pwr = pwr_rate_w
+            else:
+                gpu_est = gpu_pwr_val if gpu_pwr_val is not None else (8.0 + gpu_load_val * 0.45)
+                cpu_est = 10.0 + cpu_load * 0.35
+                est_sys_pwr = round(gpu_est + cpu_est, 1)
 
             snap = Snapshot(
                 system_name=self.system_name,
@@ -893,11 +948,13 @@ class Monitor:
                 gpu_load=float(gpu_load) if isinstance(gpu_load, (int, float)) else None,
                 gpu_clock_mhz=float(gpu_clock) if isinstance(gpu_clock, (int, float)) else None,
                 gpu_max_clock_mhz=float(gpu_max_clock) if isinstance(gpu_max_clock, (int, float)) else None,
+                gpu_mem_clock_mhz=float(gpu_mem_clock) if isinstance(gpu_mem_clock, (int, float)) else None,
+                gpu_max_mem_clock_mhz=float(gpu_max_mem_clock) if isinstance(gpu_max_mem_clock, (int, float)) else None,
                 gpu_vram_used_mb=float(vram_used) if isinstance(vram_used, (int, float)) else None,
                 gpu_vram_total_mb=float(vram_total) if isinstance(vram_total, (int, float)) else None,
                 gpu_vram_pct=vram_pct,
                 gpu_pstate=str(pstate) if pstate else None,
-                gpu_power_w=float(gpu_power) if isinstance(gpu_power, (int, float)) else None,
+                gpu_power_w=gpu_pwr_val,
                 cpu_name=self.cpu_name,
                 cpu_load=cpu_load,
                 cpu_peak_core=cpu_peak,
@@ -917,9 +974,13 @@ class Monitor:
                 battery_percent=bat_pct,
                 power_status=pwr_status,
                 power_rate_w=pwr_rate_w,
+                est_system_power_w=est_sys_pwr,
                 battery_time_left_min=bat_mins,
                 power_plan_name=plan_name,
                 power_plan_guid=plan_guid,
+                disk_read_mb_s=disk_read_mb_s,
+                disk_write_mb_s=disk_write_mb_s,
+                storage_sensors=list(self._storage_sensors),
                 fan_state=fan_state,
                 fps=fps,
             )

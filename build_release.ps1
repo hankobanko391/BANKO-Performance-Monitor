@@ -35,6 +35,7 @@ if (-not $ZipOnly) {
         "--collect-all", "pythonnet",
         "--collect-all", "clr_loader",
         "--hidden-import", "clr",
+        "--hidden-import", "tkinter.ttk",
         "--name", "BANKO",
         "--icon", "banko_icon.ico",
         "--add-data", "banko_icon.ico;."
@@ -59,6 +60,8 @@ $FilesToCopy = @(
     "monitor.py",
     "fan_engine.py",
     "tuner_engine.py",
+    "system_modules.py",
+    "ui_widgets.py",
     "generate_icon.py",
     "requirements.txt",
     "setup_and_run.bat",

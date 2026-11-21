@@ -1,4 +1,4 @@
-"""BANKO v2.2.0 overclocking, thermal watchdog, power mode, and system booster engine."""
+"""BANKO v3.0.0 overclocking, safe profiles, 82°C/86°C thermal watchdog, power mode, and system booster engine."""
 
 from __future__ import annotations
 
@@ -25,7 +25,33 @@ CPU_FREQ_MIN_GHZ = 1.80
 CPU_FREQ_MAX_GHZ = 4.50
 CPU_FREQ_STEP_GHZ = 0.10
 
+THERMAL_WATCHDOG_SAFE_C = 82.0
+THERMAL_WATCHDOG_MAX_C = 86.0
 THERMAL_WATCHDOG_LIMIT_C = 86.0
+
+SAFE_OC_PROFILES: dict[str, dict[str, object]] = {
+    "ECO": {
+        "gpu_mhz": 1055,
+        "cpu_ghz": 2.40,
+        "power_mode": "BALANCED",
+        "watchdog_c": THERMAL_WATCHDOG_SAFE_C,
+        "desc": "Cool & quiet efficiency cap (1055 MHz GPU / 2.40 GHz CPU / 82°C cutoff)",
+    },
+    "BALANCED": {
+        "gpu_mhz": None,
+        "cpu_ghz": None,
+        "power_mode": "BALANCED",
+        "watchdog_c": THERMAL_WATCHDOG_SAFE_C,
+        "desc": "Stock dynamic clocks & Windows Balanced power (82°C cutoff)",
+    },
+    "MAX SAFE OC": {
+        "gpu_mhz": 1700,
+        "cpu_ghz": 4.20,
+        "power_mode": "AC_TURBO",
+        "watchdog_c": THERMAL_WATCHDOG_MAX_C,
+        "desc": "Maximum safe AC gaming lock (up to 1700 MHz GPU / 4.20 GHz CPU / 86°C cutoff)",
+    },
+}
 
 SUB_PROCESSOR = "SUB_PROCESSOR"
 PROCFREQMAX = "PROCFREQMAX"
@@ -240,11 +266,12 @@ class ClockControlState:
     target_cpu_ghz: float | None
     nvidia_available: bool
     watchdog_tripped: bool
-    watchdog_limit_c: float = THERMAL_WATCHDOG_LIMIT_C
+    watchdog_limit_c: float = THERMAL_WATCHDOG_MAX_C
+    active_profile: str = "STOCK"
 
 
 class ClockController:
-    """Thread-safe GPU MHz / CPU GHz overclocking & 86C watchdog guardian."""
+    """Thread-safe GPU MHz / CPU GHz overclocking, safe profiles & 82°C/86°C watchdog guardian."""
 
     def __init__(self) -> None:
         self._lock = threading.Lock()
@@ -253,6 +280,17 @@ class ClockController:
         initial_mhz = read_cpu_target_freq_mhz()
         self._target_cpu_mhz = initial_mhz if initial_mhz is not None else 0
         self.watchdog_tripped = False
+        self._watchdog_limit_c: float = THERMAL_WATCHDOG_MAX_C
+        self._active_profile: str = "STOCK"
+
+    def set_watchdog_limit(self, limit_c: float) -> tuple[bool, str]:
+        """Set thermal auto-cutoff threshold to 82°C (SAFE) or 86°C (MAX)."""
+        chosen = THERMAL_WATCHDOG_SAFE_C if float(limit_c) <= 84.0 else THERMAL_WATCHDOG_MAX_C
+        with self._lock:
+            self._watchdog_limit_c = chosen
+            self.watchdog_tripped = False
+        tag = "SAFE" if chosen == THERMAL_WATCHDOG_SAFE_C else "MAX"
+        return True, f"THERMAL WATCHDOG CUTOFF SET TO {chosen:.0f}°C ({tag})"
 
     def apply_gpu_clock(self, mhz: int | float) -> tuple[bool, str]:
         ok, msg, applied = lock_gpu_clock(mhz)
@@ -260,6 +298,7 @@ class ClockController:
             with self._lock:
                 self._target_gpu_mhz = applied
                 self.watchdog_tripped = False
+                self._active_profile = "CUSTOM"
         return ok, msg
 
     def reset_gpu(self) -> tuple[bool, str]:
@@ -267,6 +306,8 @@ class ClockController:
         if ok:
             with self._lock:
                 self._target_gpu_mhz = None
+                if self._target_cpu_mhz == 0:
+                    self._active_profile = "STOCK"
         return ok, msg
 
     def apply_cpu_freq(self, ghz: float) -> tuple[bool, str]:
@@ -274,6 +315,7 @@ class ClockController:
         if ok:
             with self._lock:
                 self._target_cpu_mhz = applied_mhz
+                self._active_profile = "CUSTOM"
         return ok, msg
 
     def reset_cpu(self) -> tuple[bool, str]:
@@ -281,7 +323,100 @@ class ClockController:
         if ok:
             with self._lock:
                 self._target_cpu_mhz = 0
+                if self._target_gpu_mhz is None:
+                    self._active_profile = "STOCK"
         return ok, msg
+
+    def apply_profile(
+        self, profile_name: str, detected_max_gpu_mhz: float | None = None
+    ) -> tuple[bool, str]:
+        """Apply ECO, BALANCED, or MAX SAFE OC preset safely."""
+        key = profile_name.strip().upper()
+        spec = SAFE_OC_PROFILES.get(key)
+        if not spec:
+            return False, f"Unknown OC profile: {profile_name}"
+
+        watchdog_c = float(spec["watchdog_c"])  # type: ignore[arg-type]
+        self.set_watchdog_limit(watchdog_c)
+
+        parts: list[str] = []
+        overall_ok = True
+
+        # 1) GPU Clock
+        gpu_target = spec["gpu_mhz"]
+        if self.nvidia_available:
+            if gpu_target is None:
+                ok_g, _ = reset_gpu_clock()
+                with self._lock:
+                    if ok_g:
+                        self._target_gpu_mhz = None
+                parts.append("GPU STOCK" if ok_g else "GPU RESET ERR")
+                overall_ok = overall_ok and ok_g
+            else:
+                target_mhz = int(gpu_target)  # type: ignore[arg-type]
+                if (
+                    key == "MAX SAFE OC"
+                    and detected_max_gpu_mhz is not None
+                    and float(detected_max_gpu_mhz) >= GPU_CLOCK_MIN_MHZ
+                ):
+                    target_mhz = min(target_mhz, snap_gpu_clock_mhz(detected_max_gpu_mhz))
+                ok_g, _, applied_g = lock_gpu_clock(target_mhz)
+                with self._lock:
+                    if ok_g:
+                        self._target_gpu_mhz = applied_g
+                        self.watchdog_tripped = False
+                parts.append(f"GPU {applied_g} MHz" if ok_g else "GPU LOCK ERR")
+                overall_ok = overall_ok and ok_g
+        else:
+            parts.append("GPU N/A")
+
+        # 2) CPU Frequency
+        cpu_target = spec["cpu_ghz"]
+        if cpu_target is None:
+            ok_c, _ = reset_cpu_max_freq()
+            with self._lock:
+                if ok_c:
+                    self._target_cpu_mhz = 0
+            parts.append("CPU TURBO AUTO" if ok_c else "CPU RESET ERR")
+            overall_ok = overall_ok and ok_c
+        else:
+            ok_c, _, snapped_ghz, applied_cpu_mhz = set_cpu_max_freq_ghz(float(cpu_target))  # type: ignore[arg-type]
+            with self._lock:
+                if ok_c:
+                    self._target_cpu_mhz = applied_cpu_mhz
+            parts.append(f"CPU {snapped_ghz:.2f} GHz" if ok_c else "CPU CAP ERR")
+            overall_ok = overall_ok and ok_c
+
+        # 3) Power Mode
+        if spec["power_mode"] == "AC_TURBO":
+            ok_p, _ = activate_ac_turbo_power_mode()
+            parts.append("AC TURBO" if ok_p else "PWR ERR")
+        else:
+            ok_p, _ = restore_balanced_power_mode()
+            parts.append("BALANCED PWR" if ok_p else "PWR ERR")
+
+        with self._lock:
+            self._active_profile = key
+        parts.append(f"WD {watchdog_c:.0f}°C")
+        return overall_ok, f"PROFILE [{key}] APPLIED: " + " | ".join(parts)
+
+    def reset_to_stock(self) -> tuple[bool, str]:
+        """Reset GPU clocks, CPU PROCFREQMAX, and Windows power plan back to stock defaults."""
+        notes: list[str] = []
+        ok_all = True
+        if self.nvidia_available:
+            ok_g, msg_g = self.reset_gpu()
+            notes.append("GPU STOCK" if ok_g else msg_g)
+            ok_all = ok_all and ok_g
+        ok_c, msg_c = self.reset_cpu()
+        notes.append("CPU TURBO AUTO" if ok_c else msg_c)
+        ok_all = ok_all and ok_c
+        ok_p, msg_p = restore_balanced_power_mode()
+        notes.append("BALANCED PLAN" if ok_p else msg_p)
+        with self._lock:
+            self._active_profile = "STOCK"
+            self.watchdog_tripped = False
+        return ok_all, "RESET TO STOCK COMPLETE (" + " | ".join(notes) + ")"
 
     def sync_cpu_target(self) -> int:
         mhz = read_cpu_target_freq_mhz()
@@ -291,30 +426,37 @@ class ClockController:
             return self._target_cpu_mhz
 
     def check_thermal_watchdog(self, gpu_temp_c: float | None) -> tuple[bool, str]:
-        """Auto-reset locked GPU clocks to stock if GPU reaches >= 86°C."""
+        """Auto-reset locked GPU clocks to stock if GPU reaches >= active watchdog limit (82°C or 86°C)."""
         with self._lock:
             locked = self._target_gpu_mhz is not None
-        if not locked or gpu_temp_c is None or gpu_temp_c < THERMAL_WATCHDOG_LIMIT_C:
+            limit = self._watchdog_limit_c
+        if not locked or gpu_temp_c is None or gpu_temp_c < limit:
             return False, ""
 
         ok, reset_msg = reset_gpu_clock()
         with self._lock:
             if ok:
                 self._target_gpu_mhz = None
+                if self._target_cpu_mhz == 0:
+                    self._active_profile = "STOCK"
             self.watchdog_tripped = True
-        return True, f"THERMAL WATCHDOG TRIPPED AT {gpu_temp_c:.0f}°C (>=86°C) — {reset_msg}"
+        return True, f"THERMAL WATCHDOG TRIPPED AT {gpu_temp_c:.0f}°C (>={limit:.0f}°C) — {reset_msg}"
 
     def get_state(self) -> ClockControlState:
         with self._lock:
             t_gpu = self._target_gpu_mhz
             t_cpu = self._target_cpu_mhz
             tripped = self.watchdog_tripped
+            wd_limit = self._watchdog_limit_c
+            profile = self._active_profile
         return ClockControlState(
             target_gpu_mhz=t_gpu,
             target_cpu_mhz=t_cpu,
             target_cpu_ghz=round(t_cpu / 1000.0, 2) if t_cpu > 0 else None,
             nvidia_available=self.nvidia_available,
             watchdog_tripped=tripped,
+            watchdog_limit_c=wd_limit,
+            active_profile=profile,
         )
 
 
@@ -636,10 +778,19 @@ if __name__ == "__main__":
     assert snap_cpu_freq_ghz(3.16) == 3.20
     assert snap_cpu_freq_ghz(4.8) == 4.50
     assert ghz_to_mhz(3.20) == 3200
+    assert set(SAFE_OC_PROFILES.keys()) == {"ECO", "BALANCED", "MAX SAFE OC"}
+
+    ctrl = ClockController()
+    ok82, _ = ctrl.set_watchdog_limit(82.0)
+    assert ok82 and ctrl.get_state().watchdog_limit_c == 82.0
+    ok86, _ = ctrl.set_watchdog_limit(86.0)
+    assert ok86 and ctrl.get_state().watchdog_limit_c == 86.0
 
     guid, plan_name = read_active_power_plan()
     freq_cap = read_cpu_target_freq_mhz()
     print(f"Snapping assertions : OK")
+    print(f"Safe OC Profiles    : {', '.join(SAFE_OC_PROFILES.keys())}")
+    print(f"Watchdog 82/86 test : OK (current={ctrl.get_state().watchdog_limit_c:.0f}C)")
     print(f"UAC Admin           : {is_admin()}")
     print(f"nvidia-smi          : {find_nvidia_smi()}")
     print(f"Active Power Plan   : {plan_name} ({guid})")

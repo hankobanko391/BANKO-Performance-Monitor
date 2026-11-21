@@ -1,10 +1,11 @@
-"""Hybrid multi-fan telemetry engine for BANKO v2.2.0.
+"""Hybrid multi-fan & LHM storage telemetry engine for BANKO v3.0.0.
 
-Scans Motherboard, SuperIO, Embedded Controller (EC), Controller, and GPU
-nodes via LibreHardwareMonitorLib.dll (PawnIO + pythonnet) for real
-SensorType.Fan channels. When an OEM BIOS locks EC tachometers (0 real
-sensors exposed), falls back automatically to HYBRID THERMAL CURVE ESTIMATION
-driven by live CPU and GPU temperatures and clearly labeled as estimated.
+Scans Motherboard, SuperIO, Embedded Controller (EC), Controller, GPU, and
+Storage nodes via LibreHardwareMonitorLib.dll (PawnIO + pythonnet) for real
+SensorType.Fan channels and NVMe/SSD temperature & life sensors. When an OEM
+BIOS locks EC tachometers (0 real sensors exposed), falls back automatically
+to HYBRID THERMAL CURVE ESTIMATION driven by live CPU and GPU temperatures and
+clearly labeled as estimated.
 """
 
 from __future__ import annotations
@@ -194,10 +195,28 @@ class FanEngine:
             computer.IsCpuEnabled = False
             computer.IsMemoryEnabled = False
             computer.IsNetworkEnabled = False
-            computer.IsStorageEnabled = False
+            computer.IsStorageEnabled = True
             computer.IsPsuEnabled = False
 
-            computer.Open()
+            try:
+                computer.Open()
+            except Exception:
+                try:
+                    computer.Close()
+                except Exception:
+                    pass
+                computer = Computer()
+                computer.IsMotherboardEnabled = True
+                computer.IsControllerEnabled = True
+                computer.IsGpuEnabled = True
+                computer.IsBatteryEnabled = True
+                computer.IsCpuEnabled = False
+                computer.IsMemoryEnabled = False
+                computer.IsNetworkEnabled = False
+                computer.IsStorageEnabled = False
+                computer.IsPsuEnabled = False
+                computer.Open()
+
             self._computer = computer
             self._opened = True
             self._last_error = ""
@@ -444,6 +463,54 @@ class FanEngine:
                 pass
             return None
 
+    def read_storage_sensors(self) -> list[dict[str, Any]]:
+        """Query LHM storage nodes for NVMe/SSD temperature (°C) and remaining life (%)."""
+        results: list[dict[str, Any]] = []
+        with self._lock:
+            if not self._open_locked() or self._computer is None or self._sensor_type_enum is None:
+                return results
+            temp_type = self._sensor_type_enum.Temperature
+            level_type = self._sensor_type_enum.Level
+            try:
+                hw_nodes = list(self._computer.Hardware)
+            except Exception:
+                return results
+
+            for hw in hw_nodes:
+                if "storage" not in str(getattr(hw, "HardwareType", "")).lower():
+                    continue
+                try:
+                    hw.Update()
+                except Exception:
+                    pass
+                name = str(getattr(hw, "Name", "") or "Storage Drive").strip()
+                temp_c: float | None = None
+                primary_temp: float | None = None
+                life_pct: float | None = None
+                try:
+                    sensors = list(hw.Sensors)
+                except Exception:
+                    sensors = []
+                for s in sensors:
+                    try:
+                        stype = s.SensorType
+                        sname = str(getattr(s, "Name", "") or "").strip().lower()
+                        val = _safe_float(s.Value)
+                        if val is None:
+                            continue
+                        if stype == temp_type and 0.0 < val < 120.0:
+                            if sname == "temperature" and primary_temp is None:
+                                primary_temp = round(val, 1)
+                            elif temp_c is None:
+                                temp_c = round(val, 1)
+                        elif stype == level_type and ("life" in sname or "remaining" in sname):
+                            life_pct = round(max(0.0, min(100.0, val)), 1)
+                    except Exception:
+                        continue
+                chosen_temp = primary_temp if primary_temp is not None else temp_c
+                results.append({"name": name, "temp_c": chosen_temp, "life_pct": life_pct})
+        return results
+
     def close(self) -> None:
         with self._lock:
             if self._computer is not None:
@@ -465,5 +532,9 @@ if __name__ == "__main__":
         print(f"Fan Count  : {state.fan_count}")
         for ch in state.fans:
             print(f"  {ch.label} | {ch.name:<22} | {ch.rpm:5.0f} RPM | {ch.duty_pct:5.1f}% | {ch.status_tag}")
+        drives = fe.read_storage_sensors()
+        print(f"Storage Sensors: {len(drives)}")
+        for drv in drives:
+            print(f"  {drv['name']} | Temp: {drv['temp_c']} C | Life: {drv['life_pct']}%")
     finally:
         fe.close()

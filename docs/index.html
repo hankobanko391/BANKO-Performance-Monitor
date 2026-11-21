@@ -3,23 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BANKO Performance Monitor v2.2.0 (Tactical Edition) by Yassin Haitham (hankobanko391)</title>
-  <meta name="description" content="Official page for BANKO Performance Monitor v2.2.0 Tactical Edition by Yassin Haitham (hankobanko391). Multi-page industrial Windows 10/11 GPU VRAM, detailed RAM, battery telemetry, hybrid PawnIO fan estimator, MHz/GHz overclocker, and dedicated system boosters.">
-  <meta name="keywords" content="BANKO, BANKO Performance Monitor, BANKO v2.2.0, Yassin Haitham, hankobanko391, BANKO.exe, LibreHardwareMonitorLib PawnIO, nvidia-smi lock-gpu-clocks, PROCFREQMAX, VRAM monitor, Windows performance booster">
+  <title>BANKO Performance Monitor v3.0.0 by Yassin Haitham (hankobanko391)</title>
+  <meta name="description" content="Official page for BANKO Performance Monitor v3.0.0 by Yassin Haitham (hankobanko391). Discord-inspired 3-column Windows 10/11 tabular workstation with HWiNFO64 sensor grids, hybrid PawnIO fan engine, MHz/GHz overclocking, 4 system boosters, and 7 new engineering modules.">
+  <meta name="keywords" content="BANKO, BANKO Performance Monitor, BANKO v3.0.0, Yassin Haitham, hankobanko391, BANKO.exe, LibreHardwareMonitorLib PawnIO, nvidia-smi lock-gpu-clocks, PROCFREQMAX, NVMe ReTrim, Windows performance monitor">
   <meta name="author" content="Yassin Haitham">
   <meta name="robots" content="index, follow">
   <meta name="google-site-verification" content="t53uKDfmhJbKrQQHCF-T6qljeG-gVdySPfUeFTota3g" />
   <link rel="canonical" href="https://hankobanko391.github.io/BANKO-Performance-Monitor/" />
   <link rel="me" href="https://github.com/hankobanko391" />
-  <meta property="og:title" content="BANKO Performance Monitor v2.2.0 Tactical Edition by Yassin Haitham" />
-  <meta property="og:description" content="Multi-page industrial Windows 10/11 hardware monitor, GPU MHz &amp; CPU GHz overclocker, hybrid PawnIO fan engine, and dedicated RAM/GPU/CPU/OS boosters." />
+  <meta property="og:title" content="BANKO Performance Monitor v3.0.0 by Yassin Haitham" />
+  <meta property="og:description" content="Discord 3-column tabular Windows 10/11 hardware monitor, MHz/GHz overclocker, hybrid PawnIO fan engine, 4 system boosters, and 7 new engineering modules." />
   <meta property="og:site_name" content="BANKO Performance Monitor — Yassin Haitham" />
   <meta property="og:image" content="https://hankobanko391.github.io/BANKO-Performance-Monitor/emblem.png" />
   <meta property="og:url" content="https://hankobanko391.github.io/BANKO-Performance-Monitor/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="BANKO Performance Monitor v2.2.0 Tactical Edition by Yassin Haitham">
-  <meta name="twitter:description" content="Multi-page industrial Windows 10/11 hardware monitor, GPU MHz &amp; CPU GHz overclocker, hybrid PawnIO fan engine, and dedicated system boosters.">
+  <meta name="twitter:title" content="BANKO Performance Monitor v3.0.0 by Yassin Haitham">
+  <meta name="twitter:description" content="Discord 3-column tabular Windows 10/11 hardware monitor, MHz/GHz overclocker, hybrid PawnIO fan engine, and 11+ engineering modules.">
   <meta name="twitter:image" content="https://hankobanko391.github.io/BANKO-Performance-Monitor/emblem.png">
   <meta name="twitter:creator" content="@hankobanko391">
   <script type="application/ld+json">
@@ -40,13 +40,13 @@
       {
         "@type": "SoftwareApplication",
         "name": "BANKO Performance Monitor",
-        "alternateName": "BANKO v2.2.0 Tactical Edition",
-        "softwareVersion": "2.2.0",
+        "alternateName": "BANKO v3.0.0",
+        "softwareVersion": "3.0.0",
         "operatingSystem": "Windows 10, Windows 11",
         "applicationCategory": "UtilitiesApplication",
         "url": "https://hankobanko391.github.io/BANKO-Performance-Monitor/",
         "image": "https://hankobanko391.github.io/BANKO-Performance-Monitor/emblem.png",
-        "description": "Multi-page industrial Windows 10/11 GPU VRAM, detailed RAM, and battery telemetry monitor with hybrid PawnIO fan speed estimation, MHz/GHz overclocking, and dedicated system boosters.",
+        "description": "Discord-inspired 3-column Windows 10/11 tabular hardware monitor with HWiNFO64 sensor grids, hybrid PawnIO fan speed estimation, MHz/GHz overclocking, 4 dedicated boosters, process killer, ping/DNS tools, NVMe health, startup optimizer, 30s stress test, display Hz switcher, and CSV session logger.",
         "author": {
           "@type": "Person",
           "@id": "https://hankobanko391.github.io/#yassin-haitham",
@@ -80,21 +80,24 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0A0C0F;
-      --header: #0D1015;
-      --panel: #12161C;
-      --recessed: #0B0E12;
-      --border: #222933;
-      --divider: #1A2029;
-      --slate: #181E27;
-      --green: #44D62C;
-      --green-dim: #1C3B1A;
-      --amber: #FF9E00;
-      --amber-dim: #38250D;
-      --cyan: #00D8FF;
-      --text: #E6EDF3;
-      --text-sec: #9CA3AF;
-      --muted: #6B7280;
+      --rail: #111214;
+      --sidebar: #18191C;
+      --main: #1E1F22;
+      --row-alt: #232428;
+      --header: #2B2D31;
+      --hover: #35373C;
+      --border: #313338;
+      --blurple: #5865F2;
+      --blurple-dim: #2B3059;
+      --green: #23A55A;
+      --green-dim: #173324;
+      --amber: #F0B232;
+      --amber-dim: #3B3017;
+      --red: #F23F43;
+      --red-dim: #3D1D20;
+      --text: #F2F3F5;
+      --text-sec: #B5BAC1;
+      --muted: #80848E;
       --mono: "JetBrains Mono", Consolas, monospace;
       --sans: Inter, "Segoe UI", system-ui, sans-serif;
     }
@@ -103,7 +106,7 @@
     html, body {
       margin: 0;
       padding: 0;
-      background: var(--bg);
+      background: var(--main);
       color: var(--text);
       font-family: var(--sans);
       line-height: 1.5;
@@ -114,30 +117,30 @@
     a:hover { text-decoration: underline; }
     code {
       font-family: var(--mono);
-      font-size: 0.85em;
-      background: var(--recessed);
+      font-size: 0.84em;
+      background: var(--rail);
       border: 1px solid var(--border);
       padding: 1px 5px;
       border-radius: 2px;
-      color: var(--cyan);
+      color: var(--text);
     }
 
     .container {
-      max-width: 1240px;
+      max-width: 1300px;
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 22px;
     }
 
-    /* Top Header */
+    /* Top Bar */
     .topbar {
-      background: var(--header);
+      background: var(--rail);
       border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
       z-index: 40;
     }
     .topbar-inner {
-      height: 60px;
+      height: 58px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -149,12 +152,12 @@
       gap: 12px;
       color: var(--text);
     }
-    .brand img { width: 32px; height: 32px; display: block; }
+    .brand img { width: 30px; height: 30px; display: block; }
     .brand-title {
       font-family: var(--mono);
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 700;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.03em;
     }
     .brand-sub {
       display: block;
@@ -170,12 +173,12 @@
       font-size: 12px;
     }
     .nav-links a { color: var(--text-sec); }
-    .nav-links a:hover { color: var(--green); text-decoration: none; }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
     .version-tag {
-      color: var(--green) !important;
-      background: var(--recessed);
-      border: 1px solid var(--green);
-      padding: 3px 8px;
+      color: var(--text) !important;
+      background: var(--blurple);
+      border: 1px solid var(--blurple);
+      padding: 3px 9px;
       border-radius: 2px;
       font-weight: 700;
       font-size: 11px;
@@ -183,46 +186,48 @@
 
     /* Hero */
     .hero {
-      padding: 40px 0;
-      border-bottom: 1px solid var(--divider);
+      padding: 34px 0 38px;
+      border-bottom: 1px solid var(--border);
+      background: var(--main);
     }
     .hero-grid {
       display: grid;
-      grid-template-columns: 0.9fr 1.4fr;
+      grid-template-columns: 0.82fr 1.48fr;
       gap: 24px;
       align-items: start;
     }
     .eyebrow {
       font-family: var(--mono);
       font-size: 11px;
-      color: var(--green);
-      letter-spacing: 0.08em;
+      color: var(--blurple);
+      font-weight: 700;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
     .hero-title {
-      margin: 0 0 14px;
-      font-size: 30px;
-      line-height: 1.18;
+      margin: 0 0 12px;
+      font-size: 28px;
+      line-height: 1.2;
       font-weight: 700;
       letter-spacing: -0.02em;
     }
     .hero-desc {
-      margin: 0 0 20px;
+      margin: 0 0 18px;
       color: var(--text-sec);
-      font-size: 14.5px;
+      font-size: 14px;
     }
     .cta-stack {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      margin-bottom: 18px;
+      gap: 9px;
+      margin-bottom: 16px;
     }
     .btn {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 11px 15px;
+      padding: 10px 14px;
       border-radius: 2px;
       font-family: var(--mono);
       font-size: 12px;
@@ -230,21 +235,20 @@
       border: 1px solid var(--border);
     }
     .btn:hover { text-decoration: none; }
+    .btn-blurple {
+      background: var(--blurple);
+      border-color: var(--blurple);
+      color: var(--text);
+    }
+    .btn-blurple:hover { background: #4752C4; }
     .btn-green {
       background: var(--green-dim);
       border-color: var(--green);
       color: var(--green);
     }
-    .btn-green:hover { background: #234D20; }
-    .btn-amber {
-      background: var(--panel);
-      border-color: var(--amber);
-      color: var(--text);
-    }
-    .btn-amber:hover { background: var(--amber-dim); }
-    .btn-sub { font-size: 10px; font-weight: 400; color: var(--text-sec); }
-    .btn-green .btn-sub { color: var(--text); }
-    .btn-amber .btn-sub { color: var(--amber); }
+    .btn-green:hover { background: #1D442F; }
+    .btn-sub { font-size: 10px; font-weight: 400; color: var(--text); opacity: 0.9; }
+    .btn-green .btn-sub { color: var(--text-sec); }
 
     .spec-strip {
       display: grid;
@@ -252,9 +256,9 @@
       gap: 8px;
     }
     .spec-cell {
-      background: var(--panel);
+      background: var(--sidebar);
       border: 1px solid var(--border);
-      padding: 9px 10px;
+      padding: 8px 10px;
       border-radius: 2px;
     }
     .spec-cell .k {
@@ -266,240 +270,230 @@
     }
     .spec-cell .v {
       font-family: var(--mono);
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 700;
       color: var(--text);
     }
 
-    /* Interactive 3-Page Industrial Mockup */
-    .cmd-frame {
-      background: var(--panel);
+    /* Interactive Discord 3-Column Workspace Preview */
+    .ws-frame {
+      background: var(--main);
       border: 1px solid var(--border);
       border-radius: 2px;
       overflow: hidden;
-    }
-    .cmd-topbar {
-      background: var(--header);
-      border-bottom: 1px solid var(--border);
-      padding: 8px 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      font-family: var(--mono);
-      font-size: 10px;
-      flex-wrap: wrap;
-    }
-    .cmd-brand { display: flex; align-items: center; gap: 8px; font-weight: 700; }
-    .cmd-strip {
-      background: var(--recessed);
-      border: 1px solid var(--border);
-      padding: 2px 8px;
-      color: var(--green);
-      font-variant-numeric: tabular-nums;
-    }
-    .cmd-badges { display: flex; gap: 6px; }
-    .badge-g {
-      color: var(--green);
-      background: var(--recessed);
-      border: 1px solid var(--green);
-      padding: 2px 6px;
-      border-radius: 2px;
-      font-weight: 700;
-    }
-    .badge-a {
-      color: var(--amber);
-      background: var(--recessed);
-      border: 1px solid var(--amber);
-      padding: 2px 6px;
-      border-radius: 2px;
-      font-weight: 700;
-    }
-
-    .cmd-shell {
       display: grid;
-      grid-template-columns: 185px 1fr;
-      min-height: 350px;
-      background: var(--bg);
+      grid-template-columns: 52px 176px 1fr;
+      min-height: 410px;
+      font-family: var(--mono);
     }
-    .cmd-sidebar {
-      background: var(--header);
+    /* Col 0: Far-Left Rail */
+    .ws-rail {
+      background: var(--rail);
       border-right: 1px solid var(--border);
-      padding: 10px 8px;
+      padding: 10px 6px;
       display: flex;
       flex-direction: column;
+      align-items: center;
       gap: 6px;
     }
-    .side-kicker {
-      font-family: var(--mono);
-      font-size: 9px;
-      color: var(--muted);
-      padding: 0 4px 4px;
-    }
-    .nav-tab {
-      background: var(--panel);
+    .ws-rail img { width: 24px; height: 24px; margin-bottom: 4px; }
+    .rail-btn {
+      width: 38px;
+      height: 30px;
+      background: var(--sidebar);
       border: 1px solid var(--border);
-      border-left: 3px solid var(--border);
-      padding: 8px;
-      font-family: var(--mono);
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--text-sec);
-      cursor: pointer;
-      text-align: left;
       border-radius: 2px;
-    }
-    .nav-tab.active {
-      background: var(--slate);
-      border-color: var(--green);
-      border-left-color: var(--green);
-      color: var(--green);
-    }
-    .side-wd {
-      margin-top: auto;
-      background: var(--recessed);
-      border: 1px solid var(--border);
-      padding: 6px;
+      color: var(--text-sec);
       font-family: var(--mono);
       font-size: 9px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .rail-btn.active {
+      background: var(--blurple);
+      border-color: var(--blurple);
+      color: var(--text);
+    }
+    .rail-foot {
+      margin-top: auto;
+      font-size: 8.5px;
+      font-weight: 700;
       color: var(--green);
-      text-align: center;
+      background: var(--sidebar);
+      border: 1px solid var(--green);
+      padding: 2px 5px;
       border-radius: 2px;
     }
 
-    .cmd-stage {
-      padding: 10px;
+    /* Col 1: Channel Sidebar */
+    .ws-sidebar {
+      background: var(--sidebar);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
     }
-    .cmd-page { display: none; }
-    .cmd-page.active { display: grid; gap: 8px; }
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-    }
-    .mini-card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-    .mini-card-hdr {
-      background: var(--header);
+    .ws-sb-hdr {
+      height: 38px;
+      padding: 6px 10px;
       border-bottom: 1px solid var(--border);
-      padding: 5px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .ws-sb-hdr span.ver {
+      color: var(--green);
+      font-size: 9px;
+    }
+    .ws-ch-list {
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1;
+    }
+    .ws-cat {
+      font-size: 8.5px;
+      font-weight: 700;
+      color: var(--muted);
+      padding: 5px 4px 2px;
+    }
+    .ch-btn {
+      background: transparent;
+      border: 0;
+      border-left: 2px solid transparent;
+      color: var(--text-sec);
       font-family: var(--mono);
       font-size: 9.5px;
       font-weight: 700;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      padding: 4px 6px;
+      text-align: left;
+      cursor: pointer;
+      border-radius: 2px;
     }
-    .mini-card-body { padding: 8px; font-family: var(--mono); font-size: 10px; }
-    .stat-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      background: var(--recessed);
+    .ch-btn:hover { background: var(--hover); color: var(--text); }
+    .ch-btn.active {
+      background: var(--header);
+      border-left-color: var(--blurple);
+      color: var(--text);
+    }
+    .ws-dock {
+      margin: 6px;
+      background: var(--rail);
       border: 1px solid var(--border);
       padding: 5px 6px;
-      margin-bottom: 6px;
-      font-variant-numeric: tabular-nums;
-    }
-    .stat-cell span { display: block; }
-    .stat-cell .k { font-size: 8.5px; color: var(--muted); }
-    .stat-cell .v { font-size: 12px; font-weight: 700; text-align: right; color: var(--green); }
-    .stat-cell .v.c { color: var(--cyan); }
-    .stat-cell .v.a { color: var(--amber); }
-
-    .seg-bar {
-      display: grid;
-      grid-template-columns: repeat(20, 1fr);
-      gap: 2px;
-      background: var(--recessed);
-      border: 1px solid var(--border);
-      padding: 2px;
-      height: 10px;
-      margin: 3px 0 6px;
-    }
-    .seg-bar div { background: var(--divider); height: 100%; }
-    .seg-bar.g div.on { background: var(--green); }
-    .seg-bar.c div.on { background: var(--cyan); }
-    .seg-bar.a div.on { background: var(--amber); }
-    .kv-line {
-      display: flex;
-      justify-content: space-between;
-      font-size: 9.5px;
-      color: var(--text-sec);
-      font-variant-numeric: tabular-nums;
-    }
-    .kv-line strong { color: var(--text); }
-
-    .boost-card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      padding: 8px;
-      border-radius: 2px;
-      font-family: var(--mono);
-    }
-    .boost-card-top {
-      display: flex;
-      justify-content: space-between;
-      font-size: 10px;
-      font-weight: 700;
-      margin-bottom: 5px;
-    }
-    .boost-status {
-      background: var(--recessed);
-      border: 1px solid var(--border);
-      padding: 5px 7px;
-      font-size: 9.5px;
-      color: var(--text-sec);
-      margin-bottom: 6px;
-    }
-    .boost-btn {
-      width: 100%;
-      background: var(--slate);
-      border: 1px solid var(--green);
+      font-size: 8.5px;
       color: var(--green);
-      font-family: var(--mono);
-      font-size: 10px;
-      font-weight: 700;
-      padding: 5px;
-      cursor: pointer;
-      border-radius: 2px;
     }
 
-    .cmd-footer {
+    /* Col 2: Main Tabular Workspace */
+    .ws-main {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .ws-top {
+      height: 38px;
+      padding: 0 10px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .ws-top-title { font-size: 11px; font-weight: 700; }
+    .ws-ticker {
+      background: var(--rail);
+      border: 1px solid var(--border);
+      padding: 3px 8px;
+      font-size: 9px;
+      color: var(--green);
+      white-space: nowrap;
+    }
+    .ws-stage {
+      padding: 10px;
+      flex: 1;
+    }
+    .ws-view { display: none; }
+    .ws-view.active { display: block; }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border: 1px solid var(--border);
+      background: var(--sidebar);
+      margin-bottom: 8px;
+    }
+    .kpi-box {
+      padding: 6px 8px;
+      border-right: 1px solid var(--border);
+    }
+    .kpi-box:last-child { border-right: 0; }
+    .kpi-box span { display: block; }
+    .kpi-box .k { font-size: 8px; color: var(--muted); }
+    .kpi-box .v { font-size: 10.5px; font-weight: 700; color: var(--text); white-space: nowrap; }
+    .kpi-box .v.g { color: var(--green); }
+    .kpi-box .v.b { color: var(--blurple); }
+    .kpi-box .v.a { color: var(--amber); }
+
+    .grid-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--border);
+      font-size: 9.5px;
+      font-variant-numeric: tabular-nums;
+    }
+    .grid-table th {
       background: var(--header);
+      color: var(--text-sec);
+      text-align: left;
+      padding: 5px 8px;
+      border-bottom: 1px solid var(--border);
+      font-size: 8.5px;
+    }
+    .grid-table td {
+      padding: 5px 8px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-sec);
+    }
+    .grid-table tr:nth-child(even) td { background: var(--row-alt); }
+    .grid-table td.num { text-align: right; color: var(--text); font-weight: 700; }
+    .grid-table td.g { color: var(--green); font-weight: 700; }
+    .grid-table td.a { color: var(--amber); font-weight: 700; }
+    .grid-table td.b { color: var(--blurple); font-weight: 700; }
+
+    .ws-console {
+      background: var(--sidebar);
       border-top: 1px solid var(--border);
       padding: 5px 10px;
-      font-family: var(--mono);
-      font-size: 9.5px;
+      font-size: 9px;
       color: var(--text-sec);
     }
 
     /* Sections */
     .section {
-      padding: 40px 0;
-      border-bottom: 1px solid var(--divider);
+      padding: 36px 0;
+      border-bottom: 1px solid var(--border);
     }
     .section-title {
       font-family: var(--mono);
       font-size: 13px;
       font-weight: 700;
-      letter-spacing: 0.06em;
-      color: var(--green);
+      letter-spacing: 0.05em;
+      color: var(--blurple);
       text-transform: uppercase;
       margin: 0 0 6px;
     }
     .section-sub {
-      margin: 0 0 22px;
+      margin: 0 0 18px;
       color: var(--text-sec);
       font-size: 14px;
     }
     .tech-table {
       width: 100%;
       border-collapse: collapse;
-      background: var(--panel);
+      background: var(--sidebar);
       border: 1px solid var(--border);
       font-size: 13px;
     }
@@ -508,18 +502,19 @@
       font-family: var(--mono);
       font-size: 11px;
       text-transform: uppercase;
-      color: var(--muted);
+      color: var(--text-sec);
       text-align: left;
       padding: 10px 14px;
       border-bottom: 1px solid var(--border);
     }
     .tech-table td {
-      padding: 10px 14px;
-      border-bottom: 1px solid var(--divider);
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--border);
       color: var(--text-sec);
       vertical-align: top;
     }
-    .tech-table td:first-child { color: var(--text); font-weight: 600; white-space: nowrap; }
+    .tech-table tr:nth-child(even) td { background: var(--row-alt); }
+    .tech-table td:first-child { color: var(--text); font-weight: 700; font-family: var(--mono); white-space: nowrap; }
 
     .two-col {
       display: grid;
@@ -527,22 +522,22 @@
       gap: 20px;
     }
     .panel-box {
-      background: var(--panel);
+      background: var(--sidebar);
       border: 1px solid var(--border);
       border-radius: 2px;
-      padding: 20px;
+      padding: 18px;
     }
     .panel-box h3 {
-      margin: 0 0 12px;
+      margin: 0 0 10px;
       font-family: var(--mono);
-      font-size: 14px;
+      font-size: 13px;
       padding-bottom: 8px;
-      border-bottom: 1px solid var(--divider);
+      border-bottom: 1px solid var(--border);
     }
     .hash-box {
-      background: var(--recessed);
+      background: var(--rail);
       border: 1px solid var(--green);
-      padding: 12px;
+      padding: 11px;
       border-radius: 2px;
       font-family: var(--mono);
       font-size: 11.5px;
@@ -551,18 +546,20 @@
       margin: 10px 0;
     }
     .codeblock {
-      background: var(--recessed);
+      background: var(--rail);
       border: 1px solid var(--border);
       padding: 10px 12px;
       font-family: var(--mono);
       font-size: 11.5px;
-      color: var(--cyan);
+      color: var(--text);
       border-radius: 2px;
       overflow-x: auto;
+      white-space: pre;
     }
 
     footer {
-      padding: 24px 0 36px;
+      background: var(--rail);
+      padding: 22px 0 30px;
       font-family: var(--mono);
       font-size: 11px;
       color: var(--muted);
@@ -575,9 +572,12 @@
       gap: 12px;
     }
 
-    @media (max-width: 1024px) {
-      .hero-grid, .cmd-shell, .grid-2, .two-col { grid-template-columns: 1fr; }
-      .spec-strip { grid-template-columns: 1fr; }
+    @media (max-width: 1100px) {
+      .hero-grid, .two-col { grid-template-columns: 1fr; }
+      .ws-frame { grid-template-columns: 1fr; }
+      .ws-rail { flex-direction: row; border-right: 0; border-bottom: 1px solid var(--border); }
+      .ws-sidebar { border-right: 0; border-bottom: 1px solid var(--border); }
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
@@ -588,16 +588,16 @@
       <a class="brand" href="#">
         <img src="emblem.png" alt="BANKO triple-snake emblem">
         <div>
-          <div class="brand-title">BANKO // PERFORMANCE COMMAND</div>
-          <span class="brand-sub">TACTICAL HARDWARE TELEMETRY &amp; TUNER</span>
+          <div class="brand-title">BANKO // WORKSPACE v3.0.0</div>
+          <span class="brand-sub">DISCORD 3-COLUMN TABULAR HARDWARE SUITE</span>
         </div>
       </a>
       <nav class="nav-links" aria-label="Primary navigation">
         <a href="https://hankobanko391.github.io/">Portfolio</a>
-        <a href="#features">Architecture</a>
+        <a href="#modules">11 Modules</a>
         <a href="#verify">Verification</a>
         <a href="https://github.com/hankobanko391/BANKO-Performance-Monitor" target="_blank" rel="noopener">GitHub</a>
-        <a class="version-tag" href="https://github.com/hankobanko391/BANKO-Performance-Monitor/releases/latest" target="_blank" rel="noopener">v2.2.0</a>
+        <a class="version-tag" href="https://github.com/hankobanko391/BANKO-Performance-Monitor/releases/latest" target="_blank" rel="noopener">v3.0.0</a>
       </nav>
     </div>
   </header>
@@ -606,228 +606,316 @@
     <section class="hero">
       <div class="container hero-grid">
         <div>
-          <div class="eyebrow">WINDOWS 10 / 11 X64 &bull; TACTICAL EDITION &bull; V2.2.0</div>
-          <h1 class="hero-title">BANKO v2.2.0 &mdash; Multi-page GPU/VRAM command, hybrid fans &amp; clock tuner.</h1>
+          <div class="eyebrow">WINDOWS 10 / 11 X64 &bull; DISCORD TABULAR WORKSPACE &bull; V3.0.0</div>
+          <h1 class="hero-title">BANKO v3.0.0 &mdash; 3-column HWiNFO64 hardware monitor &amp; system workstation.</h1>
           <p class="hero-desc">
             Engineered by <a href="https://github.com/hankobanko391" target="_blank" rel="noopener"><strong>Yassin Haitham</strong> (<code>hankobanko391</code>)</a>.
-            Built with a flat matte-obsidian interface modeled after <strong>Razer Synapse</strong>, <strong>MSI Afterburner</strong>,
-            and <strong>Steam Hardware Monitor</strong>. Combines live GPU VRAM &amp; kernel RAM breakdown, AC/battery power readouts,
-            PawnIO hybrid multi-fan RPMs, MHz/GHz overclocking with an 86&deg;C watchdog, and 4 dedicated system boosters.
+            Built with a flat Discord-inspired 3-pane layout (<code>#111214</code> / <code>#18191C</code> / <code>#1E1F22</code>) and structured
+            <code>Consolas</code> data grids. Retains live GPU/VRAM, CPU, RAM breakdown, AC/battery power, PawnIO hybrid fans, MHz/GHz overclocking
+            with an 82&deg;C/86&deg;C watchdog, and adds <strong>7 new system engineering modules</strong>.
           </p>
 
           <div class="cta-stack">
-            <a class="btn btn-green" href="https://github.com/hankobanko391/BANKO-Performance-Monitor/releases/latest/download/BANKO.exe">
-              <span>DOWNLOAD BANKO.EXE v2.2.0</span>
+            <a class="btn btn-blurple" href="https://github.com/hankobanko391/BANKO-Performance-Monitor/releases/latest/download/BANKO.exe">
+              <span>DOWNLOAD BANKO.EXE v3.0.0</span>
               <span class="btn-sub">22.6 MB &bull; --uac-admin + LHM PawnIO</span>
             </a>
-            <a class="btn btn-amber" href="https://github.com/hankobanko391/BANKO-Performance-Monitor/releases/latest/download/BANKO_Portable_Setup.zip">
+            <a class="btn btn-green" href="https://github.com/hankobanko391/BANKO-Performance-Monitor/releases/latest/download/BANKO_Portable_Setup.zip">
               <span>DOWNLOAD PORTABLE SETUP (.ZIP)</span>
-              <span class="btn-sub">setup_and_run.bat &bull; Smart App Control Immune</span>
+              <span class="btn-sub">setup_and_run.bat &bull; Smart App Control Safe</span>
             </a>
           </div>
 
           <div class="spec-strip">
             <div class="spec-cell">
-              <span class="k">COMMAND UI</span>
-              <span class="v">3 TACTICAL PAGES</span>
+              <span class="k">WORKSPACE</span>
+              <span class="v">3-COL DISCORD UI</span>
             </div>
             <div class="spec-cell">
-              <span class="k">CLOCK TUNER</span>
-              <span class="v">86&deg;C WATCHDOG</span>
+              <span class="k">CHANNELS</span>
+              <span class="v">11 LIVE MODULES</span>
             </div>
             <div class="spec-cell">
-              <span class="k">FAN ENGINE</span>
-              <span class="v">LHM + HYBRID FALLBACK</span>
+              <span class="k">WATCHDOG</span>
+              <span class="v">82&deg;C / 86&deg;C CUTOFF</span>
             </div>
           </div>
         </div>
 
-        <!-- Interactive 3-Page Tactical Command Preview -->
-        <div class="cmd-frame" aria-label="BANKO v2.2.0 Multi-Page UI Preview">
-          <div class="cmd-topbar">
-            <div class="cmd-brand">
-              <img src="emblem.png" width="20" height="20" alt="BANKO">
-              <span>BANKO // PERFORMANCE COMMAND</span>
-            </div>
-            <div class="cmd-strip">GPU: 45&deg;C 1366MHz | CPU: 56&deg;C 3.45GHz | RAM: 56.8% | BAT: 100%</div>
-            <div class="cmd-badges">
-              <span class="badge-g">BANKO v2.2.0 // TACTICAL EDITION</span>
-              <span class="badge-g">UAC ADMIN: VERIFIED</span>
-            </div>
+        <!-- Interactive Discord 3-Column Tabular Workspace Preview -->
+        <div class="ws-frame" aria-label="BANKO v3.0.0 3-Column Workspace Preview">
+          <div class="ws-rail">
+            <img src="emblem.png" alt="BANKO">
+            <button type="button" class="rail-btn active" data-ch="hw-telemetry">[SYS]</button>
+            <button type="button" class="rail-btn" data-ch="clock-overclock">[OC]</button>
+            <button type="button" class="rail-btn" data-ch="network-ping">[NET]</button>
+            <button type="button" class="rail-btn" data-ch="storage-health">[DISK]</button>
+            <button type="button" class="rail-btn" data-ch="benchmark-stress">[TEST]</button>
+            <div class="rail-foot">ADM</div>
           </div>
 
-          <div class="cmd-shell">
-            <aside class="cmd-sidebar">
-              <div class="side-kicker">COMMAND MODULES</div>
-              <button type="button" class="nav-tab active" data-tab="01">[01] TELEMETRY &amp; POWER</button>
-              <button type="button" class="nav-tab" data-tab="02">[02] CLOCKS &amp; FANS</button>
-              <button type="button" class="nav-tab" data-tab="03">[03] SYSTEM BOOSTERS</button>
-              <div class="side-wd">WATCHDOG: 86&deg;C ARMED</div>
-            </aside>
+          <aside class="ws-sidebar">
+            <div class="ws-sb-hdr">
+              <span>BANKO v3.0.0</span>
+              <span class="ver">LIVE</span>
+            </div>
+            <div class="ws-ch-list">
+              <div class="ws-cat">TELEMETRY</div>
+              <button type="button" class="ch-btn active" data-ch="hw-telemetry"># hw-telemetry</button>
+              <button type="button" class="ch-btn" data-ch="fan-cooling"># fan-cooling</button>
+              <div class="ws-cat">TUNING</div>
+              <button type="button" class="ch-btn" data-ch="clock-overclock"># clock-overclock</button>
+              <button type="button" class="ch-btn" data-ch="system-boosters"># system-boosters</button>
+              <div class="ws-cat">SYSTEM</div>
+              <button type="button" class="ch-btn" data-ch="process-killer"># process-killer</button>
+              <button type="button" class="ch-btn" data-ch="network-ping"># network-ping</button>
+              <button type="button" class="ch-btn" data-ch="storage-health"># storage-health</button>
+              <button type="button" class="ch-btn" data-ch="startup-optimizer"># startup-optimizer</button>
+              <button type="button" class="ch-btn" data-ch="display-hz"># display-hz</button>
+              <div class="ws-cat">DIAGNOSTICS</div>
+              <button type="button" class="ch-btn" data-ch="benchmark-stress"># benchmark-stress</button>
+              <button type="button" class="ch-btn" data-ch="session-logger"># session-logger</button>
+            </div>
+            <div class="ws-dock">WATCHDOG: 86&deg;C ARMED</div>
+          </aside>
 
-            <div class="cmd-stage">
-              <!-- Page 01 -->
-              <div class="cmd-page active" id="page-01">
-                <div class="grid-2">
-                  <div class="mini-card">
-                    <div class="mini-card-hdr"><span>GPU &amp; VRAM TELEMETRY</span><span style="color:var(--green);">P-STATE: P0</span></div>
-                    <div class="mini-card-body">
-                      <div class="stat-row">
-                        <div class="stat-cell"><span class="k">TEMP</span><span class="v">45 &deg;C</span></div>
-                        <div class="stat-cell"><span class="k">CLOCK</span><span class="v">1366 MHz</span></div>
-                        <div class="stat-cell"><span class="k">LOAD</span><span class="v c">24 %</span></div>
-                      </div>
-                      <div class="kv-line"><span>DEDICATED VRAM</span><strong>1240 / 4096 MB (30.3%)</strong></div>
-                      <div class="seg-bar c" data-lit="6"></div>
-                    </div>
-                  </div>
-                  <div class="mini-card">
-                    <div class="mini-card-hdr"><span>CPU PACKAGE</span><span style="color:var(--cyan);">6C / 12T</span></div>
-                    <div class="mini-card-body">
-                      <div class="stat-row">
-                        <div class="stat-cell"><span class="k">TEMP</span><span class="v">56 &deg;C</span></div>
-                        <div class="stat-cell"><span class="k">FREQ</span><span class="v">3.45 GHz</span></div>
-                        <div class="stat-cell"><span class="k">LOAD</span><span class="v c">31.4 %</span></div>
-                      </div>
-                      <div class="kv-line"><span>ALL-CORE UTILIZATION</span><strong>31.4 %</strong></div>
-                      <div class="seg-bar g" data-lit="6"></div>
-                    </div>
-                  </div>
+          <div class="ws-main">
+            <div class="ws-top">
+              <div class="ws-top-title" id="pv-title"># hw-telemetry</div>
+              <div class="ws-ticker">GPU 46&deg;C 1366 / 3504 MHz | CPU 56&deg;C 3.45GHz | RAM 56.8% | BAT 100%</div>
+            </div>
+
+            <div class="ws-stage">
+              <div class="ws-view active" id="view-hw-telemetry">
+                <div class="kpi-grid">
+                  <div class="kpi-box"><span class="k">GPU CORE / MEM</span><span class="v">1366 / 3504 MHz</span></div>
+                  <div class="kpi-box"><span class="k">GPU TEMP / LOAD</span><span class="v g">46 &deg;C | 24 %</span></div>
+                  <div class="kpi-box"><span class="k">CPU TEMP / FREQ</span><span class="v g">56 &deg;C | 3.45 GHz</span></div>
+                  <div class="kpi-box"><span class="k">VRAM ALLOCATION</span><span class="v b">1240 / 3072 MB</span></div>
                 </div>
-                <div class="grid-2">
-                  <div class="mini-card">
-                    <div class="mini-card-hdr"><span>DETAILED RAM BREAKDOWN</span><span style="color:var(--green);">56.8 % USED</span></div>
-                    <div class="mini-card-body">
-                      <div class="kv-line"><span>INSTALLED / USABLE</span><strong>16.00 GB / 13.88 GB</strong></div>
-                      <div class="kv-line"><span>ACTIVE USED RAM</span><strong>7.89 GB</strong></div>
-                      <div class="seg-bar g" data-lit="11"></div>
-                      <div class="kv-line"><span>WINDOWS OS &amp; KERNEL</span><strong>1.39 GB</strong></div>
-                      <div class="kv-line"><span>AVAILABLE FREE RAM</span><strong>5.99 GB</strong></div>
-                    </div>
-                  </div>
-                  <div class="mini-card">
-                    <div class="mini-card-hdr"><span>CHARGER &amp; BATTERY POWER</span><span style="color:var(--green);">AC PLUGGED IN</span></div>
-                    <div class="mini-card-body">
-                      <div class="stat-row">
-                        <div class="stat-cell"><span class="k">BATTERY</span><span class="v">100 %</span></div>
-                        <div class="stat-cell"><span class="k">POWER</span><span class="v c">FULL AC</span></div>
-                        <div class="stat-cell"><span class="k">PLAN</span><span class="v">HIGH PERF</span></div>
-                      </div>
-                      <div class="seg-bar g" data-lit="20"></div>
-                      <div class="kv-line"><span>POWER MODE</span><strong>AC TURBO READY</strong></div>
-                    </div>
-                  </div>
-                </div>
+                <table class="grid-table">
+                  <thead>
+                    <tr><th>SENSOR / SUBSYSTEM</th><th>CURRENT</th><th>DETAIL / RANGE</th><th>STATUS</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>CPU Package Temp</td><td class="num g">56.0 &deg;C</td><td>Min 48.0 &deg;C / Max 64.0 &deg;C</td><td class="g">OK</td></tr>
+                    <tr><td>GPU Core / Mem Clock</td><td class="num b">1366 / 3504 MHz</td><td>P-State P0 &bull; 3072 MB VRAM</td><td class="g">ACTIVE</td></tr>
+                    <tr><td>RAM Breakdown</td><td class="num">7.89 / 13.88 GB</td><td>OS Kernel 1.39 GB | Free 5.99 GB</td><td class="g">56.8%</td></tr>
+                    <tr><td>AC Charger &amp; Plan</td><td class="num g">100 % PLUGGED</td><td>HIGH PERFORMANCE &bull; ~38.4 W</td><td class="g">AC TURBO</td></tr>
+                    <tr><td>FAN 01 / FAN 02</td><td class="num a">3364 / 2704 RPM</td><td>47.9% / 31.8% (EC Hybrid Curve)</td><td class="a">EST.</td></tr>
+                  </tbody>
+                </table>
               </div>
 
-              <!-- Page 02 -->
-              <div class="cmd-page" id="page-02">
-                <div class="grid-2">
-                  <div class="mini-card">
-                    <div class="mini-card-hdr"><span>GPU CLOCK OVERCLOCK (MHz)</span><span style="color:var(--amber);">800&ndash;1850</span></div>
-                    <div class="mini-card-body">
-                      <div class="stat-row">
-                        <div class="stat-cell"><span class="k">LIVE</span><span class="v">1366 MHz</span></div>
-                        <div class="stat-cell"><span class="k">TARGET</span><span class="v a">1550 MHz</span></div>
-                        <div class="stat-cell"><span class="k">GUARD</span><span class="v">86&deg;C</span></div>
-                      </div>
-                      <div class="kv-line"><span>nvidia-smi --lock-gpu-clocks</span><strong>15 MHz STEP</strong></div>
-                    </div>
-                  </div>
-                  <div class="mini-card">
-                    <div class="mini-card-hdr"><span>CPU MAX FREQUENCY (GHz)</span><span style="color:var(--amber);">1.80&ndash;4.50</span></div>
-                    <div class="mini-card-body">
-                      <div class="stat-row">
-                        <div class="stat-cell"><span class="k">LIVE</span><span class="v">3.45 GHz</span></div>
-                        <div class="stat-cell"><span class="k">PROCFREQ</span><span class="v a">3.80 GHz</span></div>
-                        <div class="stat-cell"><span class="k">RESET</span><span class="v">AUTO (0)</span></div>
-                      </div>
-                      <div class="kv-line"><span>powercfg PROCFREQMAX</span><strong>0.10 GHz STEP</strong></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="mini-card">
-                  <div class="mini-card-hdr"><span>HYBRID MULTI-FAN SPEED ENGINE</span><span class="badge-a">HYBRID THERMAL CURVE ESTIMATION</span></div>
-                  <div class="mini-card-body">
-                    <div class="kv-line"><span><strong>FAN 01</strong> // CPU COOLING FAN &bull; ESTIMATED RPM (EC LOCKED)</span><strong style="color:var(--amber);">3364 RPM | 47.9 %</strong></div>
-                    <div class="seg-bar a" data-lit="10"></div>
-                    <div class="kv-line"><span><strong>FAN 02</strong> // GPU COOLING FAN &bull; ESTIMATED RPM (EC LOCKED)</span><strong style="color:var(--amber);">2704 RPM | 31.8 %</strong></div>
-                    <div class="seg-bar a" data-lit="6"></div>
-                  </div>
-                </div>
+              <div class="ws-view" id="view-fan-cooling">
+                <table class="grid-table">
+                  <thead>
+                    <tr><th>CHANNEL</th><th>COOLING FAN</th><th>NODE</th><th>SPEED</th><th>DUTY</th><th>SOURCE</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td class="a">FAN 01</td><td>CPU COOLING FAN</td><td>HYBRID</td><td class="num a">3364 RPM</td><td class="num">47.9 %</td><td class="a">ESTIMATED RPM (EC LOCKED)</td></tr>
+                    <tr><td class="a">FAN 02</td><td>GPU COOLING FAN</td><td>HYBRID</td><td class="num a">2704 RPM</td><td class="num">31.8 %</td><td class="a">ESTIMATED RPM (EC LOCKED)</td></tr>
+                    <tr><td class="g">LHM DLL</td><td>LibreHardwareMonitorLib.dll</td><td>PawnIO</td><td class="num g">LOADED</td><td class="num">ACTIVE</td><td class="g">Motherboard / EC / GPU Scan</td></tr>
+                  </tbody>
+                </table>
               </div>
 
-              <!-- Page 03 -->
-              <div class="cmd-page" id="page-03">
-                <div class="grid-2">
-                  <div class="boost-card">
-                    <div class="boost-card-top"><span>[01] RAM BOOST</span><span style="color:var(--green);">ACTIVE</span></div>
-                    <div class="boost-status">FREED 412 MB | 108 PROCS | STANDBY FLUSHED</div>
-                    <button type="button" class="boost-btn" data-msg="RAM BOOST: EmptyWorkingSet + Standby Memory List flushed">ACTIVATE BOOST</button>
-                  </div>
-                  <div class="boost-card">
-                    <div class="boost-card-top"><span>[02] GPU BOOST</span><span style="color:var(--green);">ACTIVE</span></div>
-                    <div class="boost-status">P0 + DX HIGH-PERF | HAGS ON | ASPM OFF</div>
-                    <button type="button" class="boost-btn" data-msg="GPU BOOST: DirectX High-Perf + PCIe ASPM=0 + HAGS applied">ACTIVATE BOOST</button>
-                  </div>
-                  <div class="boost-card">
-                    <div class="boost-card-top"><span>[03] CPU BOOST</span><span style="color:var(--green);">ACTIVE</span></div>
-                    <div class="boost-status">CORES UNPARKED 100% | AGGRESSIVE BOOST</div>
-                    <button type="button" class="boost-btn" data-msg="CPU BOOST: CPMINCORES=100 + PROCTHROTTLEMIN=100 + PERFBOOSTMODE=2">ACTIVATE BOOST</button>
-                  </div>
-                  <div class="boost-card">
-                    <div class="boost-card-top"><span>[04] WINDOWS OS BOOST</span><span style="color:var(--green);">ACTIVE</span></div>
-                    <div class="boost-status">PAUSED SYSMAIN,DIAGTRACK | CACHE -184.2 MB</div>
-                    <button type="button" class="boost-btn" data-msg="WINDOWS OS BOOST: SysMain/DiagTrack stopped, shader caches cleared, Game Mode ON">ACTIVATE BOOST</button>
-                  </div>
+              <div class="ws-view" id="view-clock-overclock">
+                <div class="kpi-grid">
+                  <div class="kpi-box"><span class="k">LIVE CORE / MEM</span><span class="v g">1366 / 3504 MHz</span></div>
+                  <div class="kpi-box"><span class="k">ACTIVE PROFILE</span><span class="v a">MAX SAFE OC</span></div>
+                  <div class="kpi-box"><span class="k">CPU CAP (PROCFREQ)</span><span class="v">4.20 GHz</span></div>
+                  <div class="kpi-box"><span class="k">WATCHDOG CUTOFF</span><span class="v g">82&deg;C / 86&deg;C</span></div>
                 </div>
+                <table class="grid-table">
+                  <thead>
+                    <tr><th>SAFE PROFILE</th><th>GPU TARGET</th><th>CPU PROCFREQMAX</th><th>POWER PLAN</th><th>CUTOFF</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td class="g">ECO</td><td class="num">1055 MHz</td><td class="num">2.40 GHz</td><td>BALANCED</td><td class="g">82 &deg;C</td></tr>
+                    <tr><td>BALANCED</td><td class="num">STOCK AUTO</td><td class="num">TURBO AUTO (0)</td><td>BALANCED</td><td class="g">82 &deg;C</td></tr>
+                    <tr><td class="a">MAX SAFE OC</td><td class="num">1700 MHz</td><td class="num">4.20 GHz</td><td class="a">AC TURBO</td><td class="a">86 &deg;C</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="ws-view" id="view-system-boosters">
+                <table class="grid-table">
+                  <thead>
+                    <tr><th>BOOSTER MODULE</th><th>ACTION</th><th>RESULT</th><th>STATE</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>[01] RAM BOOST</td><td>EmptyWorkingSet + Standby List Purge</td><td>FREED 412 MB | 108 PROCS</td><td class="g">ACTIVE</td></tr>
+                    <tr><td>[02] GPU BOOST</td><td>P0 (-pm 1) + DX High-Perf + ASPM=0 + HAGS</td><td>P0 + HAGS ON</td><td class="g">ACTIVE</td></tr>
+                    <tr><td>[03] CPU BOOST</td><td>CPMINCORES=100 + AC 100% + Aggressive</td><td>CORES UNPARKED 100%</td><td class="g">ACTIVE</td></tr>
+                    <tr><td>[04] WINDOWS OS BOOST</td><td>Pause SysMain/DiagTrack + Shader Clean + DNS</td><td>CACHE -184.2 MB</td><td class="g">ACTIVE</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="ws-view" id="view-process-killer">
+                <table class="grid-table">
+                  <thead>
+                    <tr><th>PID</th><th>PROCESS IMAGE</th><th>CPU %</th><th>RAM (MB)</th><th>PRIORITY</th><th>TAG</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>4128</td><td>chrome.exe</td><td class="num">2.4 %</td><td class="num">842.6 MB</td><td>NORMAL</td><td class="a">USER APP</td></tr>
+                    <tr><td>8812</td><td>Discord.exe</td><td class="num">1.1 %</td><td class="num">318.0 MB</td><td>NORMAL</td><td class="a">BLOAT</td></tr>
+                    <tr><td>10240</td><td>GameBarPresenceWriter.exe</td><td class="num">0.2 %</td><td class="num">64.5 MB</td><td>NORMAL</td><td class="a">BLOAT</td></tr>
+                    <tr><td>2290</td><td>Valorant-Win64-Shipping.exe</td><td class="num">34.8 %</td><td class="num">2410.0 MB</td><td class="g">HIGH</td><td class="g">USER APP</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="ws-view" id="view-network-ping">
+                <table class="grid-table">
+                  <thead>
+                    <tr><th>ENDPOINT</th><th>DNS / ROUTE</th><th>LAST (ms)</th><th>AVG (ms)</th><th>LOSS %</th><th>QUALITY</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>1.1.1.1</td><td>Cloudflare Gaming Primary</td><td class="num g">14.2</td><td class="num">14.8</td><td class="num">0.0%</td><td class="g">LOW</td></tr>
+                    <tr><td>1.0.0.1</td><td>Cloudflare Secondary</td><td class="num g">15.0</td><td class="num">15.4</td><td class="num">0.0%</td><td class="g">LOW</td></tr>
+                    <tr><td>8.8.8.8</td><td>Google Public DNS</td><td class="num g">21.4</td><td class="num">22.1</td><td class="num">0.0%</td><td class="g">LOW</td></tr>
+                    <tr><td>9.9.9.9</td><td>Quad9 Anycast DNS</td><td class="num a">38.6</td><td class="num">39.2</td><td class="num">0.0%</td><td class="a">MODERATE</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="ws-view" id="view-storage-health">
+                <table class="grid-table">
+                  <thead>
+                    <tr><th>DRIVE</th><th>STORAGE DEVICE</th><th>BUS</th><th>FREE / TOTAL</th><th>TEMP</th><th>I/O R/W</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td class="g">C:</td><td>NVMe PCIe SSD</td><td>NVMe</td><td class="num">198.4 / 476.0 GB</td><td class="num g">39 &deg;C</td><td class="num">14.2 / 6.8 MB/s</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="ws-view" id="view-startup-optimizer">
+                <table class="grid-table">
+                  <thead>
+                    <tr><th>ENTRY</th><th>CATEGORY</th><th>SOURCE</th><th>IMPACT</th><th>STATE</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>OneDrive</td><td>STARTUP APP</td><td>HKCU Run</td><td class="a">HIGH</td><td class="g">ENABLED</td></tr>
+                    <tr><td>DiagTrack</td><td>SERVICE</td><td>sc:DiagTrack</td><td class="a">HIGH</td><td class="muted">DISABLED</td></tr>
+                    <tr><td>SysMain</td><td>SERVICE</td><td>sc:SysMain</td><td>MEDIUM</td><td class="muted">DISABLED</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="ws-view" id="view-display-hz">
+                <table class="grid-table">
+                  <thead>
+                    <tr><th>DISPLAY</th><th>RESOLUTION</th><th>COLOR</th><th>CURRENT Hz</th><th>MAX Hz</th><th>TOGGLE</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td class="g">\\.\DISPLAY1</td><td class="num">1920x1080</td><td>32-bit</td><td class="num g">60 Hz</td><td class="num">60 Hz</td><td class="b">MAX HZ / 60Hz</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="ws-view" id="view-benchmark-stress">
+                <table class="grid-table">
+                  <thead>
+                    <tr><th>SEC</th><th>CPU &deg;C</th><th>CPU GHz</th><th>GPU &deg;C</th><th>GPU MHz</th><th>THROUGHPUT</th><th>STATUS</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>10s</td><td class="num g">68.0</td><td class="num">3.70</td><td class="num g">58.0</td><td class="num">1683</td><td class="num b">142.8 kOps/s</td><td class="g">STABLE</td></tr>
+                    <tr><td>20s</td><td class="num a">73.5</td><td class="num">3.68</td><td class="num g">63.0</td><td class="num">1683</td><td class="num b">143.1 kOps/s</td><td class="g">STABLE</td></tr>
+                    <tr><td>30s</td><td class="num a">75.0</td><td class="num">3.68</td><td class="num g">65.0</td><td class="num">1683</td><td class="num b">143.0 kOps/s</td><td class="g">PASS — STABLE</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="ws-view" id="view-session-logger">
+                <table class="grid-table">
+                  <thead>
+                    <tr><th>TIME</th><th>ELAPSED</th><th>CPU &deg;C</th><th>GPU &deg;C</th><th>GPU MHz</th><th>VRAM MB</th><th>FAN 01</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>23:12:01</td><td>1.0s</td><td>56.0</td><td>46.0</td><td>1366</td><td>63</td><td>3364 RPM</td></tr>
+                    <tr><td>23:12:02</td><td>2.0s</td><td>56.5</td><td>46.0</td><td>1366</td><td>64</td><td>3380 RPM</td></tr>
+                  </tbody>
+                </table>
               </div>
             </div>
-          </div>
 
-          <div class="cmd-footer" id="pv-console">[22:40:00] BANKO v2.2.0 tactical command center ready</div>
+            <div class="ws-console" id="pv-console">[23:12:00] BANKO v3.0.0 3-column hardware workspace ready</div>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="section" id="features">
+    <section class="section" id="modules">
       <div class="container">
-        <h2 class="section-title">01 // Tactical Architecture &amp; Telemetry Specification</h2>
-        <p class="section-sub">Built for Windows 10/11 across NVIDIA, AMD, and Intel systems with PawnIO LibreHardwareMonitor integration.</p>
+        <h2 class="section-title">01 // Complete 11-Module Engineering Specification (v3.0.0)</h2>
+        <p class="section-sub">Every core hardware engine upgraded plus 7 new system, network, storage, display, stress, and logging tools.</p>
 
         <table class="tech-table">
           <thead>
             <tr>
-              <th>Module</th>
+              <th>Channel</th>
               <th>Backing Interface</th>
-              <th>Behavior &amp; Safety</th>
+              <th>Capabilities &amp; Guardrails</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>GPU, VRAM &amp; Clock OC</td>
-              <td><code>nvidia-smi</code> CSV stream + <code>--lock-gpu-clocks</code> (800&ndash;1850 MHz, 15 MHz step)</td>
-              <td>Tracks live Temp, MHz, Load, P-State, and Used/Total VRAM MB. Protected by an automatic <strong>86&deg;C Thermal Watchdog</strong> reset.</td>
+              <td># hw-telemetry</td>
+              <td><code>nvidia-smi</code> stream + <code>GetPerformanceInfo</code> + <code>CallNtPowerInformation</code> + <code>psutil</code></td>
+              <td>HWiNFO64-style Min/Max/Current grids for CPU/GPU temps, unclipped <code>Core / Mem MHz</code>, VRAM MB, OS/Apps/Free RAM, AC/Battery %, and Power Est.</td>
             </tr>
             <tr>
-              <td>CPU, RAM &amp; Frequency Cap</td>
-              <td><code>psutil</code>, <code>GetPerformanceInfo</code>, <code>Win32_PerfFormattedData_Counters_ProcessorInformation</code>, <code>powercfg PROCFREQMAX</code></td>
-              <td>Displays Installed, Used, Windows OS/Kernel, and Free GB plus live Turbo GHz and 1.80&ndash;4.50 GHz cap (0 = Turbo Auto).</td>
+              <td># fan-cooling</td>
+              <td><code>LibreHardwareMonitorLib.dll</code> (PawnIO + <code>pythonnet</code>)</td>
+              <td>Reads real hardware <code>FAN 01..N</code> RPMs when EC is unlocked; auto-activates Hybrid Thermal Curve Estimation (<code>FAN 01 CPU</code> &amp; <code>FAN 02 GPU</code>) on locked laptops.</td>
             </tr>
             <tr>
-              <td>Hybrid Multi-Fan Engine</td>
-              <td><code>fan_engine.py</code> &rarr; <code>LibreHardwareMonitorLib.dll</code> (PawnIO + <code>pythonnet</code>)</td>
-              <td>Reports exact hardware <code>FAN 01</code>..<code>FAN N</code> RPMs on unlocked systems; switches automatically to <code>HYBRID THERMAL CURVE ESTIMATION</code> when OEM BIOS locks EC tachometers.</td>
+              <td># clock-overclock</td>
+              <td><code>nvidia-smi --lock-gpu-clocks</code> + <code>powercfg PROCFREQMAX</code></td>
+              <td>MHz/GHz precision sliders, Safe Profiles (<code>ECO</code>, <code>BALANCED</code>, <code>MAX SAFE OC</code>, <code>RESET TO STOCK</code>), and selectable <strong>82&deg;C / 86&deg;C Thermal Watchdog</strong>.</td>
             </tr>
             <tr>
-              <td>Charger, Battery &amp; AC Turbo</td>
-              <td><code>CallNtPowerInformation(5)</code> + <code>powercfg</code></td>
-              <td>Reads battery %, charging state, Wattage rate, active power scheme, and applies AC Turbo Power Mode in one click.</td>
+              <td># system-boosters</td>
+              <td><code>EmptyWorkingSet</code>, <code>NtSetSystemInformation</code>, DirectX/HAGS, <code>CPMINCORES</code>, <code>sc stop</code></td>
+              <td>4 independent boosters (<strong>RAM Boost</strong>, <strong>GPU Boost</strong>, <strong>CPU Boost</strong>, <strong>Windows OS Boost</strong>) plus <code>ACTIVATE ALL 4 BOOSTERS</code>.</td>
             </tr>
             <tr>
-              <td>4 Dedicated Boosters</td>
-              <td><code>EmptyWorkingSet</code>, <code>NtSetSystemInformation</code>, DirectX/HAGS registry, <code>CPMINCORES</code>, <code>sc stop</code></td>
-              <td>Independent <strong>RAM Boost</strong>, <strong>GPU Boost</strong>, <strong>CPU Boost</strong>, and <strong>Windows OS Boost</strong> cards with live MB/status readback.</td>
+              <td># process-killer</td>
+              <td><code>psutil</code> process iterator &amp; priority classes</td>
+              <td>Top RAM/CPU process table with search filter, bloat classification, <code>KILL TASK</code> (protected Windows process guard), and <code>SET HIGH PRIORITY</code>.</td>
+            </tr>
+            <tr>
+              <td># network-ping</td>
+              <td>Concurrent ICMP <code>ping</code> + <code>netsh interface ip</code> + <code>ipconfig /flushdns</code></td>
+              <td>Rolling min/avg/max/loss% ping monitor (<code>1.1.1.1</code>, <code>8.8.8.8</code>, custom), 1-click Cloudflare Gaming DNS / DHCP switcher, and DNS flush.</td>
+            </tr>
+            <tr>
+              <td># storage-health</td>
+              <td>LHM Storage sensors + CIM <code>Get-PhysicalDisk</code> + <code>psutil.disk_io_counters</code> + <code>Optimize-Volume</code></td>
+              <td>NVMe/SSD temperature &amp; health, volume free/used space, live Read/Write MB/s throughput, and 1-click SSD <code>-ReTrim</code> optimization.</td>
+            </tr>
+            <tr>
+              <td># startup-optimizer</td>
+              <td><code>winreg StartupApproved</code> (Run/Run32/Folder) + <code>sc qc/config</code></td>
+              <td>Non-destructive Enable/Disable toggles for Registry/Folder startup apps and non-critical services (<code>SysMain</code>, <code>DiagTrack</code>, <code>WSearch</code>, etc.).</td>
+            </tr>
+            <tr>
+              <td># display-hz</td>
+              <td>Win32 <code>EnumDisplaySettingsW</code> + <code>ChangeDisplaySettingsExW</code></td>
+              <td>Displays resolution, color bit depth, and supported Hz modes with 1-click <code>MAX REFRESH RATE</code> and <code>BATTERY 60Hz</code> switching.</td>
+            </tr>
+            <tr>
+              <td># benchmark-stress</td>
+              <td>Multi-threaded SHA-256/Zlib + PIL matrix load</td>
+              <td>30-second CPU / CPU+GPU compute stability stress test with live temperature/clock table and automatic thermal guard abort.</td>
+            </tr>
+            <tr>
+              <td># session-logger</td>
+              <td>Timestamped UTF-8 CSV writer (<code>Documents\BANKO_Logs</code>)</td>
+              <td>Start/Stop live recording of CPU/GPU temps, MHz/GHz clocks, VRAM, RAM, power, disk I/O, and fan speeds to <code>.csv</code> reports.</td>
             </tr>
           </tbody>
         </table>
@@ -837,22 +925,22 @@
     <section class="section" id="verify">
       <div class="container">
         <h2 class="section-title">02 // Official Binary Verification &amp; Portable Deployment</h2>
-        <p class="section-sub">Verify the standalone v2.2.0 Windows binary checksum or deploy via the Smart App Control immune portable ZIP.</p>
+        <p class="section-sub">Verify the standalone v3.0.0 Windows binary checksum or run from source / portable ZIP.</p>
 
         <div class="two-col">
           <div class="panel-box">
-            <h3>SHA-256 BINARY CHECKSUM (BANKO.EXE v2.2.0)</h3>
+            <h3>SHA-256 BINARY CHECKSUM (BANKO.EXE v3.0.0)</h3>
             <p style="color:var(--text-sec);font-size:13.5px;margin:0;">
-              Standalone 64-bit Windows GUI executable (<code>23,677,155 bytes</code> / ~22.6 MB), compiled with <code>--uac-admin</code> and bundled <code>LibreHardwareMonitorLib.dll</code>:
+              Standalone 64-bit Windows GUI executable (<code>23,749,298 bytes</code> / ~22.6 MB), built with <code>--uac-admin</code> and bundled <code>LibreHardwareMonitorLib.dll</code>:
             </p>
-            <div class="hash-box">F9ED1AED554BE0E3B387482D68288D8CAF31B78F9D0ADF27C985952A6A447BC4</div>
+            <div class="hash-box">0B0852D7840D5D2DCA34FB8AE0603DFB3BC9F54DC7FE16653F7E87141C5EA39E</div>
             <div class="codeblock">Get-FileHash -Algorithm SHA256 .\BANKO.exe</div>
           </div>
 
           <div class="panel-box">
             <h3>PORTABLE SETUP &amp; SOURCE BUILD</h3>
             <p style="color:var(--text-sec);font-size:13.5px;margin:0 0 10px;">
-              Recommended for Windows 11 Smart App Control systems: extract <code>BANKO_Portable_Setup.zip</code> and launch <code>setup_and_run.bat</code>.
+              For Windows 11 Smart App Control systems: extract <code>BANKO_Portable_Setup.zip</code> and launch <code>setup_and_run.bat</code>.
             </p>
             <div class="codeblock">git clone https://github.com/hankobanko391/BANKO-Performance-Monitor.git
 cd BANKO-Performance-Monitor
@@ -867,13 +955,13 @@ python main.py</div>
   <footer>
     <div class="container footer-inner">
       <span>
-        BANKO // PERFORMANCE MONITOR v2.2.0 &bull;
+        BANKO // PERFORMANCE MONITOR v3.0.0 &bull;
         Engineered by <a href="https://github.com/hankobanko391" target="_blank" rel="noopener">Yassin Haitham (hankobanko391)</a>
       </span>
       <span>
         <a href="https://hankobanko391.github.io/">Portfolio Hub</a> &middot;
         <a href="https://github.com/hankobanko391/BANKO-Performance-Monitor" target="_blank" rel="noopener">GitHub Repo</a> &middot;
-        <a href="https://github.com/hankobanko391/BANKO-Performance-Monitor/releases/latest" target="_blank" rel="noopener">Releases (v2.2.0)</a> &middot;
+        <a href="https://github.com/hankobanko391/BANKO-Performance-Monitor/releases/latest" target="_blank" rel="noopener">Releases (v3.0.0)</a> &middot;
         <a href="https://hankobanko391.github.io/HANKO-Thermal-Suite/">HANKO Thermal Suite</a> &middot;
         <a href="https://hankobanko391.github.io/BANKO-Safe-OC-Tuners/">BANKO Tuner</a>
       </span>
@@ -881,30 +969,39 @@ python main.py</div>
   </footer>
 
   <script>
-    document.querySelectorAll('.seg-bar').forEach(bar => {
-      const lit = parseInt(bar.dataset.lit || '0', 10);
-      for (let i = 0; i < 20; i++) {
-        const seg = document.createElement('div');
-        if (i < lit) seg.className = 'on';
-        bar.appendChild(seg);
-      }
-    });
+    const chMap = {
+      "hw-telemetry": "[SYS]",
+      "fan-cooling": "[SYS]",
+      "clock-overclock": "[OC]",
+      "system-boosters": "[OC]",
+      "process-killer": "[SYS]",
+      "network-ping": "[NET]",
+      "storage-health": "[DISK]",
+      "startup-optimizer": "[DISK]",
+      "display-hz": "[SYS]",
+      "benchmark-stress": "[TEST]",
+      "session-logger": "[TEST]"
+    };
 
-    const out = document.getElementById('pv-console');
-    document.querySelectorAll('.nav-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.cmd-page').forEach(p => p.classList.remove('active'));
-        tab.classList.add('active');
-        const target = document.getElementById('page-' + tab.dataset.tab);
-        if (target) target.classList.add('active');
-        if (out) out.textContent = `[preview] switched module -> ${tab.textContent}`;
+    function activateChannel(ch) {
+      document.querySelectorAll('.ch-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.ch === ch);
       });
-    });
+      document.querySelectorAll('.rail-btn').forEach(b => {
+        b.classList.toggle('active', b.textContent === chMap[ch]);
+      });
+      document.querySelectorAll('.ws-view').forEach(v => v.classList.remove('active'));
+      const target = document.getElementById('view-' + ch);
+      if (target) target.classList.add('active');
+      const titleEl = document.getElementById('pv-title');
+      if (titleEl) titleEl.textContent = '# ' + ch;
+      const con = document.getElementById('pv-console');
+      if (con) con.textContent = `[preview] switched channel -> # ${ch}`;
+    }
 
-    document.querySelectorAll('.boost-btn').forEach(btn => {
+    document.querySelectorAll('.ch-btn, .rail-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        if (out && btn.dataset.msg) out.textContent = `[preview] ${btn.dataset.msg}`;
+        if (btn.dataset.ch) activateChannel(btn.dataset.ch);
       });
     });
   </script>

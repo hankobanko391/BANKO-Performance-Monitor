@@ -12,7 +12,7 @@ if %errorlevel% neq 0 (
 )
 
 cd /d "%~dp0"
-title BANKO v2.2.0 - Setup & Tactical Launcher
+title BANKO v3.0.0 - Setup & Workspace Launcher
 
 where python >nul 2>&1
 if %errorlevel% neq 0 (
@@ -48,7 +48,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -Command ^
   "  $lnk.TargetPath = (Join-Path $env:BANKO_ROOT 'setup_and_run.bat');" ^
   "  $lnk.WorkingDirectory = $env:BANKO_ROOT.TrimEnd('\');" ^
   "  $lnk.IconLocation = (Join-Path $env:BANKO_ROOT 'banko_icon.ico') + ',0';" ^
-  "  $lnk.Description = 'BANKO v2.2.0 - Tactical Performance Monitor & System Tuner';" ^
+  "  $lnk.Description = 'BANKO v3.0.0 - Hardware Telemetry & System Workspace';" ^
   "  $lnk.Save();" ^
   "}" >nul 2>&1
 

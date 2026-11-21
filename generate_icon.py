@@ -1,4 +1,4 @@
-"""Generate the flat Razer Tactical Green triple-snake icon for BANKO v2.2.0."""
+"""Generate the flat triple-snake icon for BANKO v3.0.0."""
 
 from __future__ import annotations
 
@@ -6,9 +6,9 @@ import math
 from pathlib import Path
 from PIL import Image, ImageDraw
 
-BG_OBSIDIAN = (10, 12, 15, 255)  # #0A0C0F
-BORDER_STEEL = (34, 41, 51, 255)  # #222933
-TACTICAL_GREEN = (68, 214, 44)  # #44D62C
+BG_OBSIDIAN = (17, 18, 20, 255)  # #111214
+BORDER_STEEL = (49, 51, 56, 255)  # #313338
+TACTICAL_GREEN = (35, 165, 90)  # #23A55A
 ICON_SIZES = [(16, 16), (24, 24), (32, 32), (48, 48), (64, 64), (128, 128), (256, 256)]
 
 
